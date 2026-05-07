@@ -1,0 +1,454 @@
+---
+tags: [suse/virtualization, suse/harvester, tech/kubernetes, tech/kvm, content/writing, content/research]
+created: 2026-04-26
+---
+
+# SUSE Virtualization: 0 to Hero
+### A hands-on guide from first login to running Kubernetes on your HCI cluster
+
+---
+
+## What This Guide Covers
+
+Six labs. Each one builds on the last. By the end you will have navigated the full SUSE Virtualization stack: created VMs, configured networks, taken snapshots, migrated workloads live between nodes, and provisioned a Kubernetes cluster that runs on top of your hypervisor — all managed from a single Rancher interface.
+
+Each lab has two parts:
+- **Demo**: a Storylane recording showing the UI flow step by step. Watch it first.
+- **Hands-on**: the steps to follow yourself on your own environment.
+
+No prior Harvester experience needed. Familiarity with basic Linux and Kubernetes concepts helps but is not required.
+
+---
+
+## What Is SUSE Virtualization?
+
+SUSE Virtualization (also called Harvester) is an open-source HCI platform built on Kubernetes. Instead of running a hypervisor kernel like ESXi and bolting Kubernetes on top of it, SUSE Virtualization runs KVM virtual machines as Kubernetes workloads using KubeVirt. Everything — VMs, networking, storage, and the platform itself — is a Kubernetes resource.
+
+This matters because it means:
+- You manage VMs the same way you manage containers: with kubectl, YAML, and GitOps if you want it.
+- Storage (Longhorn) is distributed across all nodes with no external SAN required.
+- Networking (Kube-OVN + Multus) supports both flat L2 bridges and full SDN with isolated subnets.
+- Rancher Prime manages the Harvester cluster the same way it manages any other downstream cluster.
+
+| Traditional Hypervisor | SUSE Virtualization |
+|------------------------|---------------------|
+| Proprietary hypervisor kernel | KVM + KubeVirt (open source) |
+| External SAN or vSAN | Longhorn (distributed, built in) |
+| NSX or distributed switch | Kube-OVN + Multus |
+| Separate management plane | Rancher Prime |
+
+---
+
+## Architecture at a Glance
+
+```
+┌─────────────────────────────────────────────────────┐
+│  Rancher Prime (Mission Control)                    │
+│  — manages Harvester cluster                        │
+│  — provisions guest K8s clusters on Harvester VMs  │
+└──────────────────────┬──────────────────────────────┘
+                       │
+┌──────────────────────▼──────────────────────────────┐
+│  SUSE Virtualization cluster (3+ nodes)             │
+│                                                     │
+│  node-1        node-2        node-3                 │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐             │
+│  │ KubeVirt│  │ KubeVirt│  │ KubeVirt│  ← VMs      │
+│  │ Longhorn│  │ Longhorn│  │ Longhorn│  ← Storage  │
+│  │Kube-OVN │  │Kube-OVN │  │Kube-OVN │  ← Network  │
+│  └─────────┘  └─────────┘  └─────────┘             │
+└─────────────────────────────────────────────────────┘
+```
+
+---
+
+## Lab 1 — UI Orientation
+
+**Duration:** ~5 minutes  
+**Goal:** Navigate the Harvester UI and understand what each section does before touching anything.
+
+### Concepts
+
+- **Dashboard**: live cluster health — node count, CPU/memory pressure, VM count, storage capacity.
+- **Virtual Machines**: list of all VMs, their node placement, state, and console access.
+- **Hosts**: the physical (or virtual) nodes that make up the cluster. Each node runs KVM + Longhorn + Kube-OVN.
+- **Volumes**: Longhorn block volumes backing VM disks. Replicated across nodes.
+- **Networks**: VM-facing networks. `mgmt` is the built-in management bridge. You add more.
+- **Images**: OS images available for VM creation (qcow2, ISO).
+- **Advanced**: storage classes, settings, SSH key pairs, cloud-init templates.
+
+### Demo Recording Guide (Storylane)
+
+> Record from the Harvester dashboard. No changes to the system — this is a tour only.
+
+| Step | Where to click | Tooltip text |
+|------|---------------|--------------|
+| 1 | Dashboard (left nav) | "This is your cluster at a glance. Node health, resource pressure, and VM count update in real time." |
+| 2 | Hosts (left nav) | "Each host is a node in the cluster. Click one to see CPU, memory, and which VMs are running on it." |
+| 3 | A host row → click name | "You can see the exact resources allocated vs. available per node. Longhorn reports disk health here too." |
+| 4 | Virtual Machines (left nav) | "All VMs in the cluster. State, node placement, IP, and a direct VNC/SSH console link." |
+| 5 | Networks > VM Networks (left nav) | "Networks available to VMs. The mgmt network is always here. You add VLANs and SDN subnets as needed." |
+| 6 | Storage > StorageClasses | "Longhorn storage policies. The default gives 3 replicas across 3 nodes — one node can fail without data loss." |
+| 7 | Advanced > Settings | "Cluster-wide settings: backup target, VM default namespace, UI plugin config." |
+
+### What Success Looks Like
+
+You can answer these questions without looking anything up:
+- How many nodes are in the cluster and what state are they in?
+- Where do you go to create a new VM?
+- Where do you find the list of storage volumes?
+
+---
+
+## Lab 2 — Your First VM
+
+**Duration:** ~10 minutes  
+**Goal:** Create a VM from a pre-loaded OS image, watch it start, and connect to it.
+
+### Concepts
+
+- **VirtualMachine (VM)**: a KubeVirt resource. Under the hood it is a Kubernetes pod running QEMU.
+- **Volume**: the VM's disk. Cloned from an image at creation time, stored in Longhorn.
+- **Cloud-init**: the standard mechanism for injecting SSH keys, users, and scripts into Linux VMs at first boot.
+- **VNC console**: browser-based access to the VM's screen — useful before SSH is configured.
+
+### Demo Recording Guide (Storylane)
+
+> Start from Virtual Machines. You need a pre-loaded image (openSUSE Leap 15.6 or any cloud image).
+
+| Step | Where to click | Tooltip text |
+|------|---------------|--------------|
+| 1 | Virtual Machines → Create | "Every VM starts here. Harvester will clone the image, create a Longhorn volume, and schedule the VM onto a node." |
+| 2 | Name field → type `my-first-vm` | "The VM name becomes a Kubernetes resource name. Lowercase, no spaces." |
+| 3 | CPU field → set `2` | "vCPUs are allocated from the node the VM lands on. Overcommit is allowed." |
+| 4 | Memory field → set `2` GiB | "Memory is reserved, not overcommitted by default. What you set is what the VM gets." |
+| 5 | Volumes tab → Image dropdown → select your image | "Harvester clones this image into a new Longhorn volume. The original image is not modified." |
+| 6 | Volumes tab → Size → set `20 GiB` | "This is the root disk size. You can expand it later without recreating the VM." |
+| 7 | Networks tab → verify `management Network` is selected | "The VM gets an IP on the cluster management network by default. You'll add more networks in Lab 3." |
+| 8 | Advanced → Cloud Config tab → paste SSH key | "Cloud-init runs at first boot and injects your public key. This is how you SSH in." |
+| 9 | Click Create | "Harvester creates the KubeVirt VM resource, schedules it, and starts the boot sequence." |
+| 10 | VM list → wait for Running state | "The VM is running when KubeVirt reports the pod as Ready. Usually under 60 seconds from a pre-loaded image." |
+| 11 | Click VM name → VNC Console tab | "Direct screen access. You can log in here before SSH is available." |
+
+### Hands-on Steps
+
+```bash
+# Once the VM is Running and you have its IP from the VM list:
+ssh opensuse@<VM_IP>
+
+# Verify it is a real VM with real resources
+nproc
+free -h
+df -h
+```
+
+### Verification
+
+- VM shows `Running` in the VM list.
+- VNC console shows a login prompt.
+- SSH connects successfully.
+- `nproc` returns 2, `free -h` shows ~2 GiB.
+
+---
+
+## Lab 3 — VM Networking
+
+**Duration:** ~10 minutes  
+**Goal:** Create a VLAN-backed VM network and an IP pool for load balancer addresses, then attach both to a VM.
+
+### Concepts
+
+- **VM Network (L2VlanNetwork)**: a network attachment that bridges VM traffic onto a tagged VLAN on the physical (or virtual) switch. Uses Multus under the hood.
+- **IP Pool**: a range of IPs that SUSE Virtualization's built-in load balancer (kube-vip or MetalLB) assigns to services of type LoadBalancer — including VMs that request one.
+- **Kube-OVN Subnet**: for isolated SDN networks with no external path. Supports overlapping CIDRs between namespaces.
+
+### Demo Recording Guide (Storylane)
+
+> Record two flows: (1) create a VM network, (2) create an IP pool. Keep them short.
+
+**Flow A — Create a VM Network**
+
+| Step | Where to click | Tooltip text |
+|------|---------------|--------------|
+| 1 | Networks → VM Networks → Create | "A VM Network is a network attachment definition. It tells Multus how to connect a VM's NIC to a specific VLAN." |
+| 2 | Name → `vlan100` | "Name it to match the VLAN. This becomes a Kubernetes NetworkAttachmentDefinition." |
+| 3 | Type → L2VlanNetwork | "L2 bridging — the VM's traffic goes out tagged with the VLAN ID on the host's NIC." |
+| 4 | Cluster Network → `mgmt` | "The cluster network is the physical uplink. mgmt is the default. Add more in Advanced > Cluster Networks." |
+| 5 | VLAN ID → `100` | "This VLAN tag must be trunked on your upstream switch for the VM to reach anything outside the host." |
+| 6 | Click Create | "The network is now available to any VM in this cluster. Attach it as a second NIC." |
+
+**Flow B — Create an IP Pool**
+
+| Step | Where to click | Tooltip text |
+|------|---------------|--------------|
+| 1 | Networks → IP Pools → Create | "An IP pool gives your VMs and services routable addresses from a defined range — no DHCP server needed." |
+| 2 | Name → `vm-pool` | " " |
+| 3 | Subnet → `192.168.100.0/24` | "The subnet this pool belongs to. VMs will get IPs from the ranges you define below." |
+| 4 | IP Range → `192.168.100.100` to `192.168.100.120` | "Only these IPs will be allocated. The rest of the subnet is free for other uses." |
+| 5 | Gateway → `192.168.100.1` | "Used for routing. Must match your physical network." |
+| 6 | Click Create | "The pool is ready. Any LoadBalancer service or VM requesting an external IP will draw from this range." |
+
+**Flow C — Attach the network to a VM**
+
+| Step | Where to click | Tooltip text |
+|------|---------------|--------------|
+| 1 | Virtual Machines → select `my-first-vm` → Edit | " " |
+| 2 | Networks tab → Add Network | "You can attach multiple networks to a single VM. Each one becomes a separate NIC inside the guest." |
+| 3 | Network dropdown → select `vlan100` | " " |
+| 4 | Save and restart the VM | "The new NIC is hot-pluggable on supported kernels. A restart is the safe path for all OS types." |
+
+### Hands-on Steps
+
+```bash
+# After the VM restarts, SSH in and verify the second NIC appeared
+ip addr show
+
+# The second interface (eth1 or similar) should have no IP yet
+# Configure it with your VLAN 100 address
+sudo ip addr add 192.168.100.50/24 dev eth1
+sudo ip link set eth1 up
+
+# Verify routing
+ping 192.168.100.1
+```
+
+### Verification
+
+- `vlan100` appears in Networks → VM Networks.
+- `vm-pool` appears in Networks → IP Pools.
+- The VM has two NICs after restart — visible in `ip addr show`.
+
+---
+
+## Lab 4 — Storage: Snapshots and Restore
+
+**Duration:** ~10 minutes  
+**Goal:** Understand Longhorn storage classes, take a VM snapshot, simulate data loss, and restore to a clean state.
+
+### Concepts
+
+- **StorageClass**: defines the Longhorn replication policy. The default `harvester-longhorn` uses 3 replicas. You can create classes with fewer replicas for less critical data.
+- **VM Snapshot**: a point-in-time copy of all VM volumes. Stored in Longhorn. Crash-consistent by default; application-consistent with the QEMU guest agent.
+- **Restore**: creates a new VM from a snapshot. The original VM is not touched.
+- **Backup target**: snapshots are local. For off-cluster protection, configure an S3 or NFS backup target in Advanced → Settings.
+
+### Demo Recording Guide (Storylane)
+
+**Flow A — Create a custom storage class**
+
+| Step | Where to click | Tooltip text |
+|------|---------------|--------------|
+| 1 | Advanced → Storage Classes → Create | "Storage classes are Longhorn policies. You pick the replica count and the provisioner does the rest." |
+| 2 | Name → `longhorn-2rep` | " " |
+| 3 | Number of Replicas → `2` | "2 replicas means one node can fail without losing this volume. Use this for dev/test workloads." |
+| 4 | Reclaim Policy → Delete | "When the volume is deleted, the data goes with it. Use Retain for anything you want to keep." |
+| 5 | Click Create | "The new class is available immediately. Any new VM or PVC can request it by name." |
+
+**Flow B — Take a snapshot**
+
+| Step | Where to click | Tooltip text |
+|------|---------------|--------------|
+| 1 | Virtual Machines → `my-first-vm` → ⋮ menu → Take Snapshot | "Snapshots capture all volumes attached to the VM at this instant." |
+| 2 | Name → `pre-change-snap` | "Name it to describe the state you are recording — before a config change, before an upgrade, etc." |
+| 3 | Click Create | "Longhorn creates a copy-on-write snapshot. No data is duplicated yet — only divergent writes will consume extra space." |
+| 4 | Check VM Snapshots list | "ReadyToUse: true means the snapshot is consistent and can be restored from at any point." |
+
+**Flow C — Restore from snapshot**
+
+| Step | Where to click | Tooltip text |
+|------|---------------|--------------|
+| 1 | VM Snapshots → `pre-change-snap` → Restore | " " |
+| 2 | Select "Create new VM" | "The restored VM is independent. The original VM keeps running — you can compare them side by side." |
+| 3 | New VM name → `my-first-vm-restored` | " " |
+| 4 | Click Restore | "Harvester creates a new VM from the snapshot volumes. Both VMs are now live simultaneously." |
+| 5 | Show both VMs in the VM list | "This is your rollback path. Once you confirm the restored VM is clean, delete the original." |
+
+### Hands-on Steps
+
+```bash
+# Before snapshotting: write something to the VM so you can verify the restore
+ssh opensuse@<VM_IP>
+echo "this change happened AFTER the snapshot" | sudo tee /tmp/post-snap.txt
+
+# After restoring: SSH into the restored VM
+ssh opensuse@<RESTORED_VM_IP>
+ls /tmp/post-snap.txt   # should NOT exist — the snapshot predates this file
+```
+
+### Verification
+
+- `longhorn-2rep` storage class appears in `kubectl get storageclass`.
+- Snapshot shows `ReadyToUse: true`.
+- `/tmp/post-snap.txt` does not exist on the restored VM.
+
+---
+
+## Lab 5 — Live Migration
+
+**Duration:** ~5 minutes  
+**Goal:** Move a running VM from one node to another with zero downtime.
+
+### Concepts
+
+- **Live migration**: KubeVirt moves the running VM's memory state to another node while it keeps running. The VM never stops. The disk stays in Longhorn (shared storage means no data movement needed).
+- **When it happens automatically**: when you drain a node for maintenance (`kubectl drain`), all VMs on that node migrate automatically to healthy nodes.
+- **Requirements**: the VM image must support live migration (most Linux cloud images do). Windows VMs require the VirtIO balloon driver.
+
+### Demo Recording Guide (Storylane)
+
+| Step | Where to click | Tooltip text |
+|------|---------------|--------------|
+| 1 | Virtual Machines → `my-first-vm` | "Note which node this VM is currently running on. It is shown in the Node column." |
+| 2 | ⋮ menu → Migrate | "Live migration moves the VM to another node without stopping it. The guest OS has no idea this is happening." |
+| 3 | Watch the VM row | "Status changes to Migrating briefly, then back to Running — on a different node." |
+| 4 | Confirm node has changed | "The IP does not change. Any open SSH session stays connected. Storage stays in Longhorn — nothing was copied." |
+| 5 | Hosts → original node → show VMs tab | "The VM is no longer listed here. It moved, and the freed resources are available for the next workload." |
+
+### Hands-on Steps
+
+```bash
+# Keep an SSH session open during migration to see zero downtime
+ssh opensuse@<VM_IP>
+ping 8.8.8.8 &   # leave this running
+
+# Trigger migration from the UI, then check: did ping drop any packets?
+# You should see zero packet loss across the migration window.
+```
+
+### Verification
+
+- VM ends up on a different node than it started on.
+- SSH session stays alive through the migration.
+- `ping` shows no dropped packets.
+
+---
+
+## Lab 6 — Rancher Integration: Provision a Kubernetes Cluster
+
+**Duration:** ~15 minutes  
+**Goal:** Use Rancher to provision a K3s cluster where the nodes are VMs running on SUSE Virtualization. This is the full stack: bare metal → HCI → guest Kubernetes → workload.
+
+### Concepts
+
+- **Rancher as cloud provider**: when Rancher manages a Harvester cluster, it treats Harvester like a cloud — GCP, AWS, Azure, or your own datacenter. It uses the Harvester node driver to create VMs, install K3s via cloud-init, and register the cluster back to Rancher.
+- **Cloud credential**: the Rancher credential that lets it authenticate against the Harvester API to create VMs.
+- **Harvester CSI driver**: lets the guest K8s cluster use Longhorn for persistent volumes.
+- **Harvester Cloud Provider**: enables LoadBalancer services in the guest cluster, drawing IPs from an IP pool you define in Harvester.
+
+### Demo Recording Guide (Storylane)
+
+**Flow A — Create a Harvester cloud credential**
+
+| Step | Where to click | Tooltip text |
+|------|---------------|--------------|
+| 1 | Rancher UI → top-right menu → Cloud Credentials → Create | "A cloud credential is how Rancher authenticates against a cloud provider. For Harvester, it uses the Harvester API." |
+| 2 | Select Harvester | " " |
+| 3 | Name → `harvester-local` | " " |
+| 4 | Cluster → select your imported Harvester cluster | "Rancher already manages this cluster. The credential just gives it permission to create VMs on it." |
+| 5 | Click Create | "The credential is stored securely. Rancher will use it every time it needs to provision or scale a node." |
+
+**Flow B — Provision the K3s cluster**
+
+| Step | Where to click | Tooltip text |
+|------|---------------|--------------|
+| 1 | Cluster Management → Create | " " |
+| 2 | Select RKE2/K3s → Infrastructure: Harvester | "You are telling Rancher: create the nodes as Harvester VMs, not on a cloud provider." |
+| 3 | Cluster name → `dev-cluster` | " " |
+| 4 | Cloud Credential → `harvester-local` | " " |
+| 5 | Node Pool: Machine Count → `1`, Image → your OS image, CPU → `2`, Memory → `4 GiB` | "One node to start. You can add pools and scale later — Rancher handles the VM lifecycle." |
+| 6 | Network → select `vmnet` (or your VM network) | " " |
+| 7 | Add-Ons → enable Harvester CSI Driver + Harvester Cloud Provider | "CSI gives the cluster persistent storage from Longhorn. Cloud Provider gives it LoadBalancer IPs from your IP pool." |
+| 8 | Click Create | "Rancher provisions a VM on Harvester, installs K3s via cloud-init, and registers the cluster. Takes 5-8 minutes." |
+| 9 | Cluster Management → watch dev-cluster become Active | "Active means the API server is reachable and all nodes are Ready." |
+
+**Flow C — Access the cluster and deploy a workload**
+
+| Step | Where to click | Tooltip text |
+|------|---------------|--------------|
+| 1 | dev-cluster → Download KubeConfig | "This is the kubeconfig for your guest cluster. Keep it safe — it has cluster-admin credentials." |
+| 2 | Show kubectl get nodes | "One node, Ready. It is a VM running on your Harvester cluster." |
+| 3 | Deploy a test app | "Deploy anything — nginx, a demo app, whatever. The point is: this workload is running on a VM that lives in your HCI cluster." |
+| 4 | Expose it as LoadBalancer, show EXTERNAL-IP | "The IP comes from your Harvester IP pool — the same one you created in Lab 3. The full chain connects." |
+
+### Hands-on Steps
+
+```bash
+export KUBECONFIG=~/dev-cluster.yaml
+
+# Check the node
+kubectl get nodes -o wide
+
+# Deploy a test nginx
+kubectl create deployment nginx --image=nginx
+kubectl expose deployment nginx --type=LoadBalancer --port=80
+
+# Watch for the external IP
+kubectl get svc nginx -w
+
+# Once EXTERNAL-IP appears:
+curl http://<EXTERNAL-IP>
+```
+
+### Verification
+
+- `dev-cluster` shows `Active` in Rancher Cluster Management.
+- `kubectl get nodes` returns 1 Ready node.
+- nginx deployment reaches Running state.
+- `curl` to the LoadBalancer IP returns the nginx default page.
+
+---
+
+## The Full Stack
+
+After completing all six labs, you have touched every layer:
+
+```
+Physical hardware (or nested KVM for the demo)
+  └── SUSE Virtualization (KubeVirt + Longhorn + Kube-OVN)
+        ├── VMs with VLAN networking and replicated storage
+        ├── Snapshots and live migration
+        └── Guest K3s cluster (dev-cluster)
+              ├── Longhorn persistent volumes via CSI
+              └── LoadBalancer IPs from Harvester IP pool
+                    └── Your workload, running end to end
+```
+
+Everything here is open source. Everything is SUSE-supported. No proprietary storage array, no separate hypervisor license, no separate network appliance.
+
+---
+
+## Storylane Demo Checklist
+
+Use this to track recording progress.
+
+| Demo | Lab | Status | Notes |
+|------|-----|--------|-------|
+| UI Orientation | Lab 1 | [ ] | No system changes needed |
+| Create First VM | Lab 2 | [ ] | Needs pre-loaded OS image |
+| VM Networking | Lab 3 | [ ] | Three flows: network, IP pool, attach |
+| Storage + Snapshots | Lab 4 | [ ] | Two flows: storage class, snapshot/restore |
+| Live Migration | Lab 5 | [ ] | Single flow, keep short |
+| Rancher + K3s | Lab 6 | [ ] | Three flows: credential, provision, access |
+
+**Recording tips for Storylane:**
+- Record each flow as a separate demo — easier to update one without re-recording everything.
+- Pause on each confirmation screen so viewers can read the result.
+- Keep tooltip text short: one sentence max. The written guide carries the explanation.
+- For flows that take time (VM provisioning, cluster bootstrap), cut to the end state rather than recording the wait.
+- Add a chapter marker at the start of each flow so viewers can skip to what they need.
+
+---
+
+## Prerequisites for Running These Labs Yourself
+
+| Requirement | Minimum |
+|-------------|---------|
+| SUSE Virtualization cluster | 3 nodes (can be nested KVM for testing) |
+| RAM per node | 16 GiB |
+| CPU per node | 4 vCPU |
+| Disk per node | 100 GB |
+| Rancher Prime | 2.9+ with Harvester UI plugin installed |
+| OS image | openSUSE Leap 15.6 or any cloud-init-compatible image, pre-loaded into Harvester |
+| Network | VLAN-capable switch (or a flat network for mgmt-only labs) |
+
+For a quick local setup without physical hardware, use the HCIAB (HCI in a Box) approach: a single machine with nested KVM running all three Harvester nodes inside it. See `ARCHITECTURE.md` in this repo for the full setup.

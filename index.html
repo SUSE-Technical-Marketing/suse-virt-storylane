@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SUSE Virtualization: From Zero to Production</title>
+  <meta name="description" content="Six interactive Storylane demos covering SUSE Virtualization from first login to a running Kubernetes cluster on your HCI.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ── Nav ────────────────────────────────────────────────────── -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo">
+      <span class="logo-suse">SUSE</span>
+      <span class="logo-sep">|</span>
+      <span class="logo-product">Virtualization</span>
+    </div>
+    <div class="nav-links">
+      <a href="#problem">The Problem</a>
+      <a href="#platform">Platform</a>
+      <a href="#demos">Demos</a>
+      <a href="#stack">Full Stack</a>
+      <a href="schedule.html">Schedule</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Hero ───────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">Interactive Demo Series</div>
+    <h1>SUSE Virtualization<br><span class="accent">From Zero to Production</span></h1>
+    <p class="hero-sub">Six hands-on demos. From first login to a running Kubernetes cluster on your HCI. No environment needed — click through at your own pace.</p>
+    <div class="hero-ctas">
+      <a href="#demos" class="btn btn-primary">Start the demos</a>
+      <a href="schedule.html" class="btn btn-outline">View recording schedule</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num">6</span>
+        <span class="stat-label">Interactive demos</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">55</span>
+        <span class="stat-label">Minutes total</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">0</span>
+        <span class="stat-label">Setup required</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">100%</span>
+        <span class="stat-label">Open source</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Problem ────────────────────────────────────────────────── -->
+<section id="problem">
+  <div class="container">
+    <div class="section-label">The problem</div>
+    <h2 class="section-title">Why teams are rethinking their virtualization stack</h2>
+    <p class="section-sub">Legacy hypervisors were built for a world that no longer exists.</p>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-icon">💸</div>
+        <div class="pain-title">Licensing costs</div>
+        <p class="pain-body">VMware bills jumped 2–5x post-Broadcom. Customers need a credible exit path before the next renewal.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🏗</div>
+        <div class="pain-title">Operational silos</div>
+        <p class="pain-body">VMs and Kubernetes managed with different tools, different skills, different teams. Two ops models for one platform.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🔒</div>
+        <div class="pain-title">Vendor lock-in</div>
+        <p class="pain-body">Proprietary storage, networking, and APIs at every layer. Moving anything means rebuilding everything.</p>
+      </div>
+    </div>
+    <p class="problem-cta">SUSE Virtualization solves all three. One platform. 100% open source.</p>
+  </div>
+</section>
+
+<!-- ── Platform ───────────────────────────────────────────────── -->
+<section id="platform">
+  <div class="container">
+    <div class="section-label">The platform</div>
+    <h2 class="section-title">What is SUSE Virtualization?</h2>
+    <p class="section-sub">Open-source HCI built on Kubernetes. Not bolted onto it.</p>
+    <div class="pillars-grid">
+      <div class="pillar-card">
+        <div class="pillar-num">01</div>
+        <div>
+          <div class="pillar-title">KubeVirt</div>
+          <p class="pillar-body">VMs run as Kubernetes workloads. Manage virtual machines the same way you manage containers — kubectl, YAML, GitOps if you want it.</p>
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">02</div>
+        <div>
+          <div class="pillar-title">Longhorn</div>
+          <p class="pillar-body">Distributed block storage, built in. No external SAN needed. 3-replica replication across nodes by default. Snapshots and backups included.</p>
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">03</div>
+        <div>
+          <div class="pillar-title">Kube-OVN</div>
+          <p class="pillar-body">SDN networking. VLAN bridging, isolated subnets, and IP pools for LoadBalancer services. No NSX required.</p>
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">04</div>
+        <div>
+          <div class="pillar-title">Rancher Prime</div>
+          <p class="pillar-body">Single pane of glass for the Harvester cluster and all guest Kubernetes clusters running on top of it. One login for everything.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Demos ──────────────────────────────────────────────────── -->
+<section id="demos">
+  <div class="container">
+    <div class="section-label">Hands-on demos</div>
+    <h2 class="section-title">Six demos, end to end</h2>
+    <p class="section-sub">Each demo is a Storylane interactive walkthrough. Click through steps at your own pace — no environment needed.</p>
+    <div class="demos-grid">
+
+      <div class="demo-card">
+        <div class="demo-header">
+          <div class="demo-num">01</div>
+          <span class="demo-duration">5 min</span>
+        </div>
+        <div class="demo-title">UI Orientation</div>
+        <div class="demo-sub">Navigate the platform before touching anything</div>
+        <ul class="demo-points">
+          <li>Dashboard: live cluster health, node count, resource pressure</li>
+          <li>Hosts: per-node CPU, memory, and Longhorn disk health</li>
+          <li>Virtual Machines: state, node placement, VNC console</li>
+          <li>Networks, Volumes, Images: where to find everything</li>
+        </ul>
+        <a href="#" class="btn-demo placeholder">Coming soon</a>
+      </div>
+
+      <div class="demo-card">
+        <div class="demo-header">
+          <div class="demo-num">02</div>
+          <span class="demo-duration">10 min</span>
+        </div>
+        <div class="demo-title">Create Your First VM</div>
+        <div class="demo-sub">From image to running VM in under 60 seconds</div>
+        <ul class="demo-points">
+          <li>Pick image, set CPU and RAM, configure cloud-init SSH key</li>
+          <li>Longhorn clones the image into a new volume automatically</li>
+          <li>Access via VNC console before SSH is ready</li>
+          <li>SSH in and verify vCPU, RAM, and disk match the spec</li>
+        </ul>
+        <a href="#" class="btn-demo placeholder">Coming soon</a>
+      </div>
+
+      <div class="demo-card">
+        <div class="demo-header">
+          <div class="demo-num">03</div>
+          <span class="demo-duration">10 min</span>
+        </div>
+        <div class="demo-title">VM Networking</div>
+        <div class="demo-sub">VLAN bridging, IP pools, and multi-NIC VMs</div>
+        <ul class="demo-points">
+          <li>Create a VLAN-backed VM network (L2VlanNetwork via Multus)</li>
+          <li>Create an IP pool for LoadBalancer address allocation</li>
+          <li>Attach the new network to a VM as a second NIC</li>
+          <li>Kube-OVN subnets for isolated, overlapping CIDRs</li>
+        </ul>
+        <a href="#" class="btn-demo placeholder">Coming soon</a>
+      </div>
+
+      <div class="demo-card">
+        <div class="demo-header">
+          <div class="demo-num">04</div>
+          <span class="demo-duration">10 min</span>
+        </div>
+        <div class="demo-title">Storage + Snapshots</div>
+        <div class="demo-sub">Longhorn replication and point-in-time recovery</div>
+        <ul class="demo-points">
+          <li>Create a custom storage class (2-replica dev vs 3-replica prod)</li>
+          <li>Take a crash-consistent VM snapshot</li>
+          <li>Simulate data loss, restore to a new VM from the snapshot</li>
+          <li>Original and restored VM running side-by-side</li>
+        </ul>
+        <a href="#" class="btn-demo placeholder">Coming soon</a>
+      </div>
+
+      <div class="demo-card">
+        <div class="demo-header">
+          <div class="demo-num">05</div>
+          <span class="demo-duration">5 min</span>
+        </div>
+        <div class="demo-title">Live Migration</div>
+        <div class="demo-sub">Move a running VM between nodes with zero downtime</div>
+        <ul class="demo-points">
+          <li>One-click migration from the VM context menu</li>
+          <li>VM lands on a new node — status briefly shows Migrating</li>
+          <li>SSH session stays alive. IP does not change. Zero packet loss.</li>
+          <li>Same mechanism fires automatically on kubectl drain</li>
+        </ul>
+        <a href="#" class="btn-demo placeholder">Coming soon</a>
+      </div>
+
+      <div class="demo-card">
+        <div class="demo-header">
+          <div class="demo-num">06</div>
+          <span class="demo-duration">15 min</span>
+        </div>
+        <div class="demo-title">Rancher + K3s</div>
+        <div class="demo-sub">Provision Kubernetes on top of your HCI cluster</div>
+        <ul class="demo-points">
+          <li>Create a Harvester cloud credential in Rancher</li>
+          <li>Rancher provisions a K3s cluster via VMs and cloud-init</li>
+          <li>Enable Harvester CSI Driver and Cloud Provider</li>
+          <li>Deploy a workload, expose as LoadBalancer, verify external IP</li>
+        </ul>
+        <a href="#" class="btn-demo placeholder">Coming soon</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Full Stack ─────────────────────────────────────────────── -->
+<section id="stack">
+  <div class="container">
+    <div class="section-label">The complete picture</div>
+    <h2 class="section-title">The full stack, end to end</h2>
+    <p class="section-sub">After the six demos, you have touched every layer of the platform.</p>
+    <div class="stack-diagram">
+      <div class="stack-layer">
+        <div class="stack-icon">🖥</div>
+        <div class="stack-info">
+          <div class="stack-name">Physical hardware</div>
+          <div class="stack-desc">Bare metal nodes — or nested KVM for the lab environment</div>
+        </div>
+      </div>
+      <div class="stack-connector">+</div>
+      <div class="stack-layer">
+        <div class="stack-icon">☁️</div>
+        <div class="stack-info">
+          <div class="stack-name">SUSE Virtualization cluster</div>
+          <div class="stack-desc">VMs with VLAN networking &nbsp;|&nbsp; Replicated Longhorn storage &nbsp;|&nbsp; Live migration between nodes</div>
+        </div>
+      </div>
+      <div class="stack-connector">+</div>
+      <div class="stack-layer">
+        <div class="stack-icon">⎈</div>
+        <div class="stack-info">
+          <div class="stack-name">Guest Kubernetes (K3s or RKE2)</div>
+          <div class="stack-desc">Nodes are VMs on Harvester &nbsp;|&nbsp; Longhorn CSI for persistent volumes &nbsp;|&nbsp; Harvester IP pools for LoadBalancer IPs</div>
+        </div>
+      </div>
+      <div class="stack-connector">+</div>
+      <div class="stack-layer">
+        <div class="stack-icon">🚀</div>
+        <div class="stack-info">
+          <div class="stack-name">Your workload</div>
+          <div class="stack-desc">Running end to end, from bare metal to application</div>
+        </div>
+      </div>
+    </div>
+    <p class="stack-footer">
+      Everything open source. Everything SUSE-supported.
+      <span> No proprietary storage. No hypervisor license. No vendor lock-in.</span>
+    </p>
+  </div>
+</section>
+
+<!-- ── Next Steps ─────────────────────────────────────────────── -->
+<section>
+  <div class="container">
+    <div class="section-label">What's next</div>
+    <h2 class="section-title">Ready to go further?</h2>
+    <p class="section-sub">Three paths depending on where you are today.</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-n">01</div>
+        <div class="step-title">Try the rodeo</div>
+        <p class="step-body">Run the Instruqt hands-on lab. No install needed. A full 3-node SUSE Virtualization cluster ready in minutes.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-n">02</div>
+        <div class="step-title">Go deeper</div>
+        <p class="step-body">Follow the 0-to-Hero guide in your own environment. The same six labs, with hands-on steps and verification checks at each stage.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-n">03</div>
+        <div class="step-title">Talk to SUSE</div>
+        <p class="step-body">Ready to plan a migration or proof of concept? The SUSE team can scope it, size it, and run it with you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <span class="footer-logo">SUSE</span>
+      <span>© 2026 SUSE LLC. All rights reserved.</span>
+      <a href="schedule.html">Recording schedule</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
