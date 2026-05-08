@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Recording Schedule — SUSE Virtualization Demos</title>
+  <meta name="description" content="Five-day plan to record, polish, and publish six SUSE Virtualization interactive demos.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -14,14 +15,15 @@
 <!-- ── Nav ────────────────────────────────────────────────────── -->
 <nav>
   <div class="nav-inner">
-    <div class="logo">
-      <span class="logo-suse">SUSE</span>
-      <span class="logo-sep">|</span>
+    <a href="index.html" class="logo">
+      <img src="img/suse-logo.png" alt="SUSE" class="logo-img">
+      <span class="logo-divider"></span>
       <span class="logo-product">Virtualization</span>
-    </div>
+    </a>
     <div class="nav-links">
       <a href="index.html#problem">The Problem</a>
       <a href="index.html#platform">Platform</a>
+      <a href="index.html#requirements">Requirements</a>
       <a href="index.html#demos">Demos</a>
       <a href="schedule.html">Schedule</a>
     </div>
@@ -31,9 +33,10 @@
 <!-- ── Page hero ──────────────────────────────────────────────── -->
 <div class="page-hero">
   <div class="container">
+    <img src="img/suse-logo.png" alt="SUSE" class="page-hero-logo">
     <div class="section-label">5-day plan</div>
     <h1>Recording &amp; delivery schedule</h1>
-    <p>From zero to published demos in five working days. Audience: Sales Engineers and prospects.</p>
+    <p>From zero to published demos in five working days. Validated on SUSE Virtualization v1.7.1 with Rancher Prime v2.13.1. Audience: Sales Engineers and prospects.</p>
   </div>
 </div>
 
@@ -59,7 +62,7 @@
         <div class="day-label">Day 2</div>
         <div class="day-tasks">
           <h3>Labs 3 and 4</h3>
-          <p>Record Lab 3 (VM Networking) across three flows: create a VLAN VM network, create an IP pool, attach the network to a VM. Record Lab 4 (Storage + Snapshots) across two flows: custom storage class, snapshot and restore. Add tooltips and review both.</p>
+          <p>Record Lab 3 (VM Networking) across three flows: create a cluster network, create a VLAN VM network (L2VlanNetwork via Multus), attach the network to a VM. Record Lab 4 (Storage + Snapshots) across two flows: custom storage class, snapshot and restore. Add tooltips and review both.</p>
           <div class="day-tags">
             <span class="tag">Lab 03 — VM Networking (3 flows)</span>
             <span class="tag">Lab 04 — Storage + Snapshots (2 flows)</span>
@@ -71,10 +74,10 @@
         <div class="day-label">Day 3</div>
         <div class="day-tasks">
           <h3>Labs 5 and 6</h3>
-          <p>Record Lab 5 (Live Migration) — single short flow, keep it tight. Record Lab 6 (Rancher + K3s) across three flows: create cloud credential, provision K3s cluster, access and deploy workload. Cut to end state on the provisioning wait. Add tooltips and review all Lab 6 flows.</p>
+          <p>Record Lab 5 (Live Migration) — requires 3-node cluster. Single short flow, keep it tight; show the target node selector before and after. Record Lab 6 (Rancher + RKE2) across three flows: import Harvester into Rancher, create cloud credential + provision RKE2 cluster via Harvester node driver, deploy workload and verify LoadBalancer IP. Cut to end state on provisioning waits. Add tooltips and review all Lab 6 flows.</p>
           <div class="day-tags">
             <span class="tag">Lab 05 — Live Migration</span>
-            <span class="tag">Lab 06 — Rancher + K3s (3 flows)</span>
+            <span class="tag">Lab 06 — Rancher + RKE2 (3 flows)</span>
           </div>
         </div>
       </div>
@@ -96,7 +99,7 @@
         <div class="day-label">Day 5</div>
         <div class="day-tasks">
           <h3>Review + final delivery</h3>
-          <p>SE review pass — test all six demo links, walk through the site as a prospect would. Update the PPTX deck with the same Storylane links. Final QA. Share site URL, PPTX, and demo links with the team.</p>
+          <p>SE review pass — test all six demo links, walk through the site as a prospect would. Update the PPTX deck with the same Storylane links. Final QA against the POC guide verification checklist. Share site URL, PPTX, and demo links with the team.</p>
           <div class="day-tags">
             <span class="tag">SE review pass</span>
             <span class="tag">PPTX — insert Storylane links</span>
@@ -179,7 +182,7 @@
           <td class="check">☐</td>
         </tr>
         <tr>
-          <td>Rancher + K3s (3 flows)</td>
+          <td>Rancher + RKE2 (3 flows)</td>
           <td>06</td>
           <td class="check">☐</td>
           <td class="check">☐</td>
@@ -197,7 +200,7 @@
 <footer>
   <div class="container">
     <div class="footer-inner">
-      <span class="footer-logo">SUSE</span>
+      <img src="img/suse-logo.png" alt="SUSE" class="footer-logo-img">
       <span>© 2026 SUSE LLC. All rights reserved.</span>
       <a href="index.html">Back to demos</a>
     </div>

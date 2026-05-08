@@ -52,10 +52,21 @@ nav {
   justify-content: space-between;
 }
 
-.logo { display: flex; align-items: center; gap: 10px; font-family: var(--font-head); font-weight: 700; }
-.logo-suse { color: var(--green); font-size: 22px; letter-spacing: -0.01em; }
-.logo-sep  { color: var(--border); font-size: 20px; }
-.logo-product { color: var(--text); font-size: 15px; font-weight: 600; }
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.logo:hover { text-decoration: none; }
+.logo-img { height: 26px; width: auto; display: block; }
+.logo-divider {
+  width: 1px;
+  height: 22px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+.logo-product { color: var(--text); font-family: var(--font-head); font-size: 15px; font-weight: 600; }
 
 .nav-links { display: flex; gap: 28px; }
 .nav-links a { color: var(--gray); font-size: 14px; font-weight: 600; transition: color 0.15s; }
@@ -107,6 +118,13 @@ nav {
   background: linear-gradient(170deg, #EBF8F1 0%, #FFFFFF 55%);
 }
 
+.hero-logo {
+  height: 40px;
+  width: auto;
+  margin: 0 auto 28px;
+  display: block;
+}
+
 .hero-badge {
   display: inline-block;
   background: var(--green-dim);
@@ -140,7 +158,21 @@ nav {
   margin: 0 auto 32px;
 }
 
-.hero-ctas { display: flex; gap: 12px; justify-content: center; margin-bottom: 56px; }
+.hero-ctas { display: flex; gap: 12px; justify-content: center; margin-bottom: 24px; }
+
+.hero-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+.hero-version {
+  font-size: 13px;
+  color: var(--gray);
+  font-weight: 500;
+}
+.hero-meta-sep { color: var(--border); font-size: 16px; }
 
 .hero-stats {
   display: flex;
@@ -369,10 +401,12 @@ footer {
   font-size: 13px;
 }
 .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-.footer-logo { color: var(--green); font-family: var(--font-head); font-weight: 700; font-size: 16px; }
+.footer-logo-img { height: 22px; width: auto; display: block; opacity: 0.75; }
+.footer-logo-img:hover { opacity: 1; }
 
 /* ── Schedule page ───────────────────────────────────────────── */
 .page-hero { padding: 64px 0 48px; border-bottom: 1px solid var(--border); background: linear-gradient(170deg, #EBF8F1 0%, #FFFFFF 55%); }
+.page-hero-logo { height: 32px; width: auto; display: block; margin-bottom: 20px; }
 .page-hero h1 { font-family: var(--font-head); font-size: clamp(28px, 4vw, 42px); font-weight: 700; letter-spacing: -0.01em; margin-bottom: 10px; color: var(--text); }
 .page-hero p  { color: var(--gray); font-size: 16px; }
 
