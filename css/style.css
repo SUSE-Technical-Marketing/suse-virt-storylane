@@ -218,6 +218,34 @@ section { padding: 80px 0; border-bottom: 1px solid var(--border); }
 .pillar-title { font-family: var(--font-head); font-size: 17px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
 .pillar-body  { color: var(--gray); font-size: 14px; line-height: 1.6; }
 
+/* ── Requirements ────────────────────────────────────────────── */
+.req-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.req-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 24px;
+}
+.req-icon { font-size: 24px; margin-bottom: 12px; }
+.req-label {
+  font-family: var(--font-head);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 6px;
+}
+.req-spec {
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.req-prod { font-size: 14px; font-weight: 400; color: var(--gray); }
+.req-note { font-size: 13px; color: var(--gray); line-height: 1.6; }
+
 /* ── Demos grid ──────────────────────────────────────────────── */
 .demos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .demo-card {
@@ -411,6 +439,7 @@ footer {
 @media (max-width: 768px) {
   .pain-grid    { grid-template-columns: 1fr; }
   .pillars-grid { grid-template-columns: 1fr; }
+  .req-grid     { grid-template-columns: 1fr; }
   .demos-grid   { grid-template-columns: 1fr; }
   .steps-grid   { grid-template-columns: 1fr; }
   .hero-stats   { gap: 24px; flex-wrap: wrap; }
