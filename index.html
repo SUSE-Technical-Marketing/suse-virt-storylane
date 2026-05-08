@@ -23,10 +23,8 @@
     <div class="nav-links">
       <a href="#problem">The Problem</a>
       <a href="#platform">Platform</a>
-      <a href="#requirements">Requirements</a>
       <a href="#demos">Demos</a>
       <a href="#stack">Full Stack</a>
-      <a href="schedule.html">Schedule</a>
     </div>
   </div>
 </nav>
@@ -40,7 +38,7 @@
     <p class="hero-sub">Six hands-on demos. From first login to a running Kubernetes cluster on your HCI. No environment needed — click through at your own pace.</p>
     <div class="hero-ctas">
       <a href="#demos" class="btn btn-primary">Start the demos</a>
-      <a href="schedule.html" class="btn btn-outline">View recording schedule</a>
+      <a href="#platform" class="btn btn-outline">How it works</a>
     </div>
     <div class="hero-meta">
       <span class="hero-version">Validated on SUSE Virtualization v1.7.1</span>
@@ -151,51 +149,51 @@
 <!-- ── Requirements ───────────────────────────────────────────── -->
 <section id="requirements">
   <div class="container">
-    <div class="section-label">Before you deploy</div>
-    <h2 class="section-title">Hardware and software requirements</h2>
-    <p class="section-sub">Minimum specs for a 3-node proof-of-concept cluster. Production thresholds are higher — use these as a starting point for sizing.</p>
+    <div class="section-label">No proprietary hardware</div>
+    <h2 class="section-title">Runs on the servers you already have</h2>
+    <p class="section-sub">SUSE Virtualization installs on standard x86_64 or ARM64 bare metal. No certified-only hardware, no storage appliances, no special networking gear.</p>
     <div class="req-grid">
 
       <div class="req-card">
         <div class="req-icon">🖥</div>
-        <div class="req-label">CPU</div>
-        <div class="req-spec">8-core min <span class="req-prod">/ 16-core production</span></div>
-        <p class="req-note">x86_64 and ARM64 supported. Hardware-assisted virtualization required.</p>
-      </div>
-
-      <div class="req-card">
-        <div class="req-icon">🧠</div>
-        <div class="req-label">Memory</div>
-        <div class="req-spec">32 GB min <span class="req-prod">/ 64 GB production</span></div>
-        <p class="req-note">Per node. First 3 nodes become HA management nodes automatically.</p>
+        <div class="req-label">Architecture</div>
+        <div class="req-spec">x86_64 and ARM64</div>
+        <p class="req-note">Any server with hardware-assisted virtualization. Works on Dell, HPE, Lenovo, Supermicro, Arm-based servers, and more.</p>
       </div>
 
       <div class="req-card">
         <div class="req-icon">💾</div>
         <div class="req-label">Storage</div>
-        <div class="req-spec">250 GB min <span class="req-prod">/ 500 GB production</span></div>
-        <p class="req-note">SSD or NVMe required — 5,000+ random IOPS per disk. Separate OS and data disks recommended.</p>
+        <div class="req-spec">No SAN required</div>
+        <p class="req-note">Longhorn turns local SSD or NVMe disks into replicated distributed storage. No external storage array needed.</p>
       </div>
 
       <div class="req-card">
         <div class="req-icon">🌐</div>
-        <div class="req-label">Network</div>
-        <div class="req-spec">1 Gbps min <span class="req-prod">/ 10 Gbps production</span></div>
-        <p class="req-note">2 NICs recommended per node — one for management, one for VM workload traffic. Switch must support VLAN trunking.</p>
+        <div class="req-label">Networking</div>
+        <div class="req-spec">Standard switches</div>
+        <p class="req-note">VLAN trunking on your existing switches is all you need. No proprietary SDN hardware, no NSX license.</p>
       </div>
 
       <div class="req-card">
         <div class="req-icon">⎈</div>
-        <div class="req-label">Cluster size</div>
-        <div class="req-spec">3 nodes minimum</div>
-        <p class="req-note">Required for HA management plane and live migration. The first 3 nodes auto-promote to management nodes.</p>
+        <div class="req-label">High availability</div>
+        <div class="req-spec">3-node minimum</div>
+        <p class="req-note">First 3 nodes auto-promote to HA management nodes. Add more nodes at any time to expand capacity.</p>
       </div>
 
       <div class="req-card">
         <div class="req-icon">📦</div>
-        <div class="req-label">Software</div>
-        <div class="req-spec">SUSE Virtualization v1.7.1</div>
-        <p class="req-note">Rancher Prime v2.13.1 or later for multi-cluster management. ISO installer for bare-metal, USB, or PXE boot.</p>
+        <div class="req-label">Installation</div>
+        <div class="req-spec">ISO, USB, or PXE</div>
+        <p class="req-note">Boot from the Harvester ISO, a USB stick, or PXE-boot across your rack. Air-gapped deployment fully supported.</p>
+      </div>
+
+      <div class="req-card">
+        <div class="req-icon">🔓</div>
+        <div class="req-label">License</div>
+        <div class="req-spec">100% open source</div>
+        <p class="req-note">Apache 2.0 licensed. No per-VM fees, no CPU socket taxes, no proprietary add-ons to unlock basic features.</p>
       </div>
 
     </div>
@@ -368,23 +366,23 @@
 <section>
   <div class="container">
     <div class="section-label">What's next</div>
-    <h2 class="section-title">Ready to go further?</h2>
-    <p class="section-sub">Three paths depending on where you are today.</p>
+    <h2 class="section-title">Liked what you saw?</h2>
+    <p class="section-sub">Three ways to keep going.</p>
     <div class="steps-grid">
       <div class="step-card">
         <div class="step-n">01</div>
-        <div class="step-title">Try the rodeo</div>
-        <p class="step-body">Follow along with the 0-to-Hero lab guide against a real bare-metal SUSE Virtualization cluster. All six labs, no setup required on your end. VMware migration and DR failover exercises available in the extended lab track.</p>
+        <div class="step-title">Dig into the docs</div>
+        <p class="step-body">The <a href="https://documentation.suse.com/cloudnative/virtualization/" target="_blank">official SUSE Virtualization documentation</a> covers every feature shown in these demos in depth — architecture, networking, storage, Rancher integration, and more.</p>
       </div>
       <div class="step-card">
         <div class="step-n">02</div>
-        <div class="step-title">Run your own POC</div>
-        <p class="step-body">Deploy in your own environment using the <a href="https://documentation.suse.com/cloudnative/virtualization/" target="_blank">official documentation</a>. SUSE recommends a 3-week POC cycle — enough time to cover all 40 verification items from the POC guide.</p>
+        <div class="step-title">Try the hands-on lab</div>
+        <p class="step-body">Work through a guided lab on a real bare-metal SUSE Virtualization cluster. No environment setup on your end. All six topics covered, at your own pace.</p>
       </div>
       <div class="step-card">
         <div class="step-n">03</div>
         <div class="step-title">Talk to SUSE</div>
-        <p class="step-body">Ready to plan a migration or proof of concept? The SUSE team can scope it, size it, and run it with you — from hardware selection through production cutover.</p>
+        <p class="step-body">Questions about your specific environment, workloads, or migration path? The SUSE team can help you plan a migration from VMware and size a cluster for your needs.</p>
       </div>
     </div>
   </div>
@@ -396,7 +394,7 @@
     <div class="footer-inner">
       <img src="img/suse-logo.png" alt="SUSE" class="footer-logo-img">
       <span>© 2026 SUSE LLC. All rights reserved.</span>
-      <a href="schedule.html">Recording schedule</a>
+      <a href="https://documentation.suse.com/cloudnative/virtualization/" target="_blank">Documentation</a>
     </div>
   </div>
 </footer>
