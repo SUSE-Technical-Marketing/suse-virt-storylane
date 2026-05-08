@@ -196,6 +196,103 @@
   </div>
 </section>
 
+<!-- ── POC Verification Checklist ────────────────────────────── -->
+<section class="poc-section">
+  <div class="container">
+    <div class="section-label">Full POC reference</div>
+    <h2 class="section-title">40-item POC verification checklist</h2>
+    <p class="section-sub">From the official SUSE Virtualization POC Guide v1.7.1. Use this during the Day 5 SE review pass to confirm the platform meets all customer requirements before sign-off.</p>
+
+    <div class="poc-categories">
+
+      <div class="poc-category">
+        <div class="poc-cat-title">Deployment</div>
+        <ul class="poc-list">
+          <li><span class="poc-num">01</span>Installing Harvester from ISO</li>
+          <li><span class="poc-num">02</span>Adding additional nodes to the cluster</li>
+        </ul>
+      </div>
+
+      <div class="poc-category">
+        <div class="poc-cat-title">Network configuration</div>
+        <ul class="poc-list">
+          <li><span class="poc-num">03</span>Configuring HTTP proxy</li>
+          <li><span class="poc-num">04</span>Network card interface binding for management</li>
+          <li><span class="poc-num">05</span>Allocate a dedicated storage network</li>
+          <li><span class="poc-num">06</span>Create a VLAN network for VM traffic</li>
+          <li><span class="poc-num">07</span>Verify VLAN configuration across all nodes</li>
+        </ul>
+      </div>
+
+      <div class="poc-category">
+        <div class="poc-cat-title">Storage</div>
+        <ul class="poc-list">
+          <li><span class="poc-num">08</span>Deploy Harvester with built-in Prometheus + Grafana monitoring</li>
+          <li><span class="poc-num">09</span>Verify Longhorn services enabled and disk configuration</li>
+          <li><span class="poc-num">10</span>Verify Longhorn data store mounted on each host</li>
+          <li><span class="poc-num">14</span>Configure backup target to S3 or NFS</li>
+          <li><span class="poc-num">15</span>Create a data volume and set up 3 replicas</li>
+        </ul>
+      </div>
+
+      <div class="poc-category">
+        <div class="poc-cat-title">VM operations</div>
+        <ul class="poc-list">
+          <li><span class="poc-num">11</span>Upload an ISO or qcow2 image</li>
+          <li><span class="poc-num">12</span>Configure cloud-config user data initialization script</li>
+          <li><span class="poc-num">13</span>Import SSH key and access VM (Linux)</li>
+          <li><span class="poc-num">16</span>Create a VM with multiple NICs</li>
+          <li><span class="poc-num">17</span>Create VM with cloud-config network data</li>
+          <li><span class="poc-num">18</span>Verify GuestOS creation — Windows and Linux versions</li>
+          <li><span class="poc-num">19</span>Import VMs from VMware / vSphere to Harvester</li>
+          <li><span class="poc-num">20</span>VM snapshot and snapshot space management</li>
+          <li><span class="poc-num">21</span>Verify VM resource scalability (CPU, memory, disk)</li>
+          <li><span class="poc-num">22</span>Add, remove, and enlarge VM storage volumes</li>
+          <li><span class="poc-num">23</span>FIO Longhorn disk performance testing in a VM</li>
+          <li><span class="poc-num">24</span>CPU pinning quota lock for VM</li>
+          <li><span class="poc-num">25</span>Perform live migration of a running VM</li>
+        </ul>
+      </div>
+
+      <div class="poc-category">
+        <div class="poc-cat-title">Backup + restore</div>
+        <ul class="poc-list">
+          <li><span class="poc-num">26</span>VM backup to S3 / MinIO</li>
+          <li><span class="poc-num">27</span>Restore a VM from an S3 backup</li>
+        </ul>
+      </div>
+
+      <div class="poc-category">
+        <div class="poc-cat-title">Integration + security</div>
+        <ul class="poc-list">
+          <li><span class="poc-num">28</span>Support container workloads alongside VMs</li>
+          <li><span class="poc-num">29</span>Deploy Rancher Prime to manage the Harvester cluster</li>
+          <li><span class="poc-num">30</span>AD / LDAP authentication and lockout policy via Rancher</li>
+          <li><span class="poc-num">31</span>Multi-cluster management with Rancher</li>
+          <li><span class="poc-num">32</span>Node maintenance — define VM behavior during drain</li>
+        </ul>
+      </div>
+
+      <div class="poc-category">
+        <div class="poc-cat-title">DR failover + failback</div>
+        <ul class="poc-list">
+          <li><span class="poc-num">33</span>Network failover — access port (add, remove, fail)</li>
+          <li><span class="poc-num">34</span>Network failover — trunk port (add, remove, fail)</li>
+          <li><span class="poc-num">35</span>Node shutdown / power-off to trigger VM failover</li>
+          <li><span class="poc-num">36</span>Power-on node and monitor Longhorn PV replication rebuild</li>
+          <li><span class="poc-num">37</span>Execute node failover with failback</li>
+          <li><span class="poc-num">38</span>Execute node failover without failback</li>
+          <li><span class="poc-num">39</span>Network packet and session analysis during failover</li>
+          <li><span class="poc-num">40</span>VM failover during network failure</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <p class="poc-note">SUSE recommends a 3-week POC cycle to cover all 40 items. Reference: <a href="docs/poc-guide-v1.7.0.md" target="_blank">SUSE Virtualization POC Guide v1.7.1</a></p>
+  </div>
+</section>
+
 <!-- ── Footer ─────────────────────────────────────────────────── -->
 <footer>
   <div class="container">

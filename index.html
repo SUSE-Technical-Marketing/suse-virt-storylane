@@ -80,7 +80,7 @@
       <div class="pain-card">
         <div class="pain-icon">💸</div>
         <div class="pain-title">Licensing costs</div>
-        <p class="pain-body">VMware bills jumped 2–5x post-Broadcom. Customers need a credible exit path before the next renewal.</p>
+        <p class="pain-body">VMware bills jumped 2–5x post-Broadcom. SUSE Virtualization includes a VM import tool to bring existing vSphere workloads across directly — no re-platforming required.</p>
       </div>
       <div class="pain-card">
         <div class="pain-icon">🏗</div>
@@ -132,6 +132,18 @@
           <p class="pillar-body">Single pane of glass for Harvester and all guest Kubernetes clusters. Built-in Prometheus and Grafana observability. Multi-tenant RBAC across clusters and projects.</p>
         </div>
       </div>
+    </div>
+
+    <div class="feature-strip">
+      <span class="feature-pill">Windows + Linux VMs</span>
+      <span class="feature-pill">VMware import</span>
+      <span class="feature-pill">Air-gapped deployment</span>
+      <span class="feature-pill">NFS + S3 backup targets</span>
+      <span class="feature-pill">CPU pinning</span>
+      <span class="feature-pill">AD / LDAP via Rancher</span>
+      <span class="feature-pill">PXE / USB / ISO install</span>
+      <span class="feature-pill">Container workloads</span>
+      <span class="feature-pill">DR failover + failback</span>
     </div>
   </div>
 </section>
@@ -220,10 +232,10 @@
           <span class="demo-duration">10 min</span>
         </div>
         <div class="demo-title">Create Your First VM</div>
-        <div class="demo-sub">From image to running VM in under 60 seconds</div>
+        <div class="demo-sub">From image to running VM — Linux or Windows</div>
         <ul class="demo-points">
-          <li>Pick a cloud image (qcow2), set CPU and RAM, inject SSH key via cloud-init</li>
-          <li>Longhorn clones the image into a new volume automatically</li>
+          <li>Pick an image (qcow2 for Linux, ISO for Windows Server), set CPU and RAM</li>
+          <li>Inject SSH key and cloud-init user-data; Longhorn clones the volume automatically</li>
           <li>Access via VNC console before SSH is ready</li>
           <li>SSH in and verify vCPU, RAM, and disk match the spec</li>
         </ul>
@@ -251,13 +263,13 @@
           <div class="demo-num">04</div>
           <span class="demo-duration">10 min</span>
         </div>
-        <div class="demo-title">Storage + Snapshots</div>
-        <div class="demo-sub">Longhorn replication and point-in-time recovery</div>
+        <div class="demo-title">Storage, Snapshots + Backups</div>
+        <div class="demo-sub">Longhorn replication, local snapshots, and off-cluster backup targets</div>
         <ul class="demo-points">
           <li>Create a custom storage class (2-replica dev vs 3-replica prod)</li>
-          <li>Take a crash-consistent VM snapshot (stored locally in cluster)</li>
+          <li>Take a crash-consistent VM snapshot — stored locally in the cluster</li>
           <li>Simulate data loss, restore to a new VM from the snapshot</li>
-          <li>Original and restored VM running side-by-side</li>
+          <li>Configure an NFS or S3 backup target for off-cluster DR backups</li>
         </ul>
         <a href="#" class="btn-demo placeholder">Coming soon</a>
       </div>
@@ -362,7 +374,7 @@
       <div class="step-card">
         <div class="step-n">01</div>
         <div class="step-title">Try the rodeo</div>
-        <p class="step-body">Follow along with the 0-to-Hero lab guide against a real bare-metal SUSE Virtualization cluster. All six labs, no setup required on your end.</p>
+        <p class="step-body">Follow along with the 0-to-Hero lab guide against a real bare-metal SUSE Virtualization cluster. All six labs, no setup required on your end. VMware migration and DR failover exercises available in the extended lab track.</p>
       </div>
       <div class="step-card">
         <div class="step-n">02</div>
