@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab — SUSE Virtualization</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/lab.css">
+</head>
+<body>
+
+<div class="lab-shell">
+
+  <!-- ── Top bar ──────────────────────────────────────────── -->
+  <header class="lab-topbar">
+    <a href="index.html">
+      <img src="img/suse-logo.png" alt="SUSE" class="lab-logo">
+    </a>
+    <div class="lab-topbar-divider"></div>
+    <div class="lab-topbar-center">
+      <span class="lab-topbar-num" id="js-topbar-num"></span>
+      <span class="lab-topbar-sep">|</span>
+      <span class="lab-topbar-title" id="js-topbar-title"></span>
+    </div>
+    <div class="lab-topbar-actions">
+      <a href="index.html#demos" class="lab-back-link">← All demos</a>
+      <button class="lab-toggle-btn panel-open" id="js-toggle" aria-label="Toggle instructions">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8.5" y="1" width="4.5" height="12" rx="1" fill="currentColor" opacity="0.3"/>
+          <rect x="1" y="1" width="6" height="12" rx="1" fill="currentColor"/>
+        </svg>
+        Instructions
+      </button>
+    </div>
+  </header>
+
+  <!-- ── Body ─────────────────────────────────────────────── -->
+  <div class="lab-body">
+
+    <!-- Left: Storylane demo -->
+    <div class="lab-frame-area">
+      <div class="lab-placeholder" id="js-placeholder">
+        <div class="placeholder-card">
+          <div class="placeholder-icon">🎬</div>
+          <div class="placeholder-title">Demo coming soon</div>
+          <p class="placeholder-body">This interactive demo is being recorded. Follow the instructions on the right to preview the flow, then check back once it goes live.</p>
+          <a href="index.html#demos" class="placeholder-cta">← Browse all demos</a>
+        </div>
+      </div>
+      <iframe id="js-iframe" class="lab-iframe" src="" allowfullscreen allow="clipboard-write" style="display:none"></iframe>
+    </div>
+
+    <!-- Right: Instructions panel -->
+    <aside class="lab-panel" id="js-panel">
+      <div class="panel-progress">
+        <div class="panel-progress-fill" id="js-progress" style="width:0%"></div>
+      </div>
+      <div class="lab-panel-scroll">
+        <div class="lab-panel-inner">
+
+          <div class="panel-header">
+            <div class="panel-num" id="js-num"></div>
+            <div class="panel-title" id="js-title"></div>
+            <div class="panel-meta">
+              <span class="panel-duration" id="js-duration"></span>
+            </div>
+            <p class="panel-intro" id="js-intro"></p>
+          </div>
+
+          <ol class="lab-steps" id="js-steps"></ol>
+
+          <div class="panel-footer">
+            <a href="index.html#demos" class="panel-back">← Back to all demos</a>
+            <div class="panel-nav">
+              <a href="#" class="panel-nav-btn prev" id="js-prev" hidden>← Previous</a>
+              <a href="#" class="panel-nav-btn next" id="js-next" hidden>Next lab →</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<script>
+const LABS = {
+  '01': {
+    title: 'UI Orientation',
+    duration: '5 min',
+    storylaneUrl: null,
+    intro: 'Get familiar with every section of the SUSE Virtualization dashboard before you touch anything. No changes — just explore.',
+    steps: [
+      {
+        title: 'Open the Dashboard',
+        body: 'The main view shows live cluster health at a glance: node count, total vCPUs and memory allocated, storage used, and any active alerts. Watch the charts update in real time.'
+      },
+      {
+        title: 'Inspect the Hosts page',
+        body: 'Click Hosts in the left nav. Each node shows CPU and memory utilization plus the health of its Longhorn-managed disks. A red disk icon means the replica count dropped below the target.'
+      },
+      {
+        title: 'Browse Virtual Machines',
+        body: 'The VM list shows each machine\'s state (Running, Stopped, Migrating), the node it\'s running on, and a link to its built-in VNC console — no extra client needed.'
+      },
+      {
+        title: 'Explore Networks',
+        body: 'Two types live here: cluster networks (bound to a physical NIC on each node) and VM networks (VLAN-tagged, delivered to VMs via Multus). You\'ll create both of these in Lab 03.'
+      },
+      {
+        title: 'Check Volumes and Images',
+        body: 'Volumes are Longhorn-backed PVCs — one per VM disk. Images are the base qcow2 or ISO files VMs boot from. You can upload new images here at any time.'
+      }
+    ]
+  },
+  '02': {
+    title: 'Create Your First VM',
+    duration: '10 min',
+    storylaneUrl: null,
+    intro: 'Spin up a Linux or Windows VM from scratch, inject your SSH key via cloud-init, access it through the built-in VNC console, and verify it\'s running exactly to spec.',
+    steps: [
+      {
+        title: 'Pick an image and set resources',
+        body: 'Go to Virtual Machines and click Create. Select a qcow2 image for Linux or an ISO for Windows Server. Set the vCPU count and memory to match your workload.'
+      },
+      {
+        title: 'Choose a storage class',
+        body: 'Longhorn clones the image into a new PVC automatically. Select a 2-replica class for dev or a 3-replica class for production. The replica count determines how many node failures you can survive.'
+      },
+      {
+        title: 'Inject cloud-init',
+        body: 'Paste your SSH public key into the SSH Keys field. Add cloud-init user-data under the Advanced tab to set the hostname, install packages, or run a startup script.'
+      },
+      {
+        title: 'Access via the VNC console',
+        body: 'While the VM boots, click the VNC Console button on the VM detail page. You can watch the boot sequence and log in before network connectivity is ready.'
+      },
+      {
+        title: 'SSH in and verify the spec',
+        body: 'Once the VM shows Running and an IP appears, SSH in with your key. Run lscpu, free -h, and df -h to confirm the vCPU count, RAM, and disk size match what you configured.'
+      }
+    ]
+  },
+  '03': {
+    title: 'VM Networking',
+    duration: '10 min',
+    storylaneUrl: null,
+    intro: 'Build a complete VM network from scratch: a cluster network bound to a physical NIC, a VLAN on top of it, an IP pool for LoadBalancer services, and a VM with a second NIC attached.',
+    steps: [
+      {
+        title: 'Create a cluster network',
+        body: 'Go to Networks → Cluster Networks. Create a new one and bind it to the physical NIC you want to use for VM traffic on each node. This becomes the physical uplink for your VLANs.'
+      },
+      {
+        title: 'Create a VLAN VM network',
+        body: 'Under VM Networks, create an L2VlanNetwork. Set the VLAN ID and select the cluster network you just created. Multus + bridge CNI handles the plumbing — the VM gets a real Layer 2 interface.'
+      },
+      {
+        title: 'Create an IP pool',
+        body: 'Under Networks → IP Pools, define the CIDR, gateway, and any reserved ranges. Kube-OVN pulls addresses from this pool when assigning external IPs to LoadBalancer-type services.'
+      },
+      {
+        title: 'Attach the network to a VM',
+        body: 'Edit an existing VM and add a second NIC. Select the VLAN VM network you created. The VM now has two interfaces: its management NIC and a dedicated interface on the VLAN segment.'
+      }
+    ]
+  },
+  '04': {
+    title: 'Storage, Snapshots + Backups',
+    duration: '10 min',
+    storylaneUrl: null,
+    intro: 'Create storage classes for different tiers, take a local VM snapshot, restore from it to prove it works, then set up an off-cluster backup target for real DR coverage.',
+    steps: [
+      {
+        title: 'Create custom storage classes',
+        body: 'Go to Advanced → Storage Classes. Create a 2-replica class for dev and a 3-replica class for production. New VMs can select either — the replica count is set at volume creation time.'
+      },
+      {
+        title: 'Take a VM snapshot',
+        body: 'Open a running VM and click Snapshots → Take Snapshot. Longhorn writes a crash-consistent copy of all VM disks into the cluster. The VM keeps running throughout.'
+      },
+      {
+        title: 'Simulate data loss and restore',
+        body: 'Delete a file inside the VM to simulate data loss. Then restore the VM from the snapshot. The VM rolls back to the exact disk state at snapshot time — the file reappears.'
+      },
+      {
+        title: 'Configure a backup target',
+        body: 'Go to Settings → Backup Target. Add an S3 endpoint or NFS share with credentials. Longhorn sends backups off-cluster to this target, giving you a second copy outside the cluster for DR.'
+      }
+    ]
+  },
+  '05': {
+    title: 'Live Migration',
+    duration: '5 min',
+    storylaneUrl: null,
+    intro: 'Move a running VM from one node to another with zero downtime, no IP change, and no dropped SSH connections. Requires a 3-node cluster.',
+    steps: [
+      {
+        title: 'Confirm cluster readiness',
+        body: 'Live migration requires at least 3 nodes. Go to Hosts and confirm all nodes show Schedulable. Check that the target node has enough free CPU and memory for the VM.'
+      },
+      {
+        title: 'Initiate migration',
+        body: 'Open the VM\'s context menu (⋮) and click Migrate. Select the target node. SUSE Virtualization uses KubeVirt\'s live migration — memory pages are transferred to the target while the VM keeps running.'
+      },
+      {
+        title: 'Watch the progress',
+        body: 'The VM state shows Migrating. KubeVirt transfers memory pages iteratively, then does a final cutover in milliseconds. The whole process typically finishes in seconds on a LAN.'
+      },
+      {
+        title: 'Verify zero downtime',
+        body: 'Keep an SSH session open to the VM throughout. The session stays alive, the IP does not change, and you should see zero packet loss on a ping running in parallel.'
+      }
+    ]
+  },
+  '06': {
+    title: 'Rancher + RKE2',
+    duration: '15 min',
+    storylaneUrl: null,
+    intro: 'Provision a full production-grade Kubernetes cluster on top of your HCI using Rancher Prime and the Harvester node driver — VMs become Kubernetes nodes automatically.',
+    steps: [
+      {
+        title: 'Import Harvester into Rancher',
+        body: 'In Rancher Prime, go to Virtualization Management and click Import Existing. Copy the registration command and run it on a Harvester node. The cluster appears under management within a minute.'
+      },
+      {
+        title: 'Create a Harvester cloud credential',
+        body: 'Under Cloud Credentials, add a new Harvester credential using the API URL and a kubeconfig from your Harvester cluster. This gives Rancher access to provision VMs via the Harvester node driver.'
+      },
+      {
+        title: 'Provision an RKE2 cluster',
+        body: 'Create a new cluster and select the Harvester infrastructure provider. Define node pools for control plane and workers. Rancher spins up VMs on Harvester automatically — no manual VM creation needed.'
+      },
+      {
+        title: 'Deploy a workload',
+        body: 'Once the cluster shows Active, deploy a sample workload — a simple nginx Deployment. Expose it as a LoadBalancer Service. Rancher handles the kubectl apply for you through the UI.'
+      },
+      {
+        title: 'Verify the external IP',
+        body: 'Kube-OVN assigns an address from the IP pool you created in Lab 03. The Service External IP field updates automatically. curl the IP to confirm the workload is reachable from outside the cluster.'
+      }
+    ]
+  }
+};
+
+const ORDER = ['01', '02', '03', '04', '05', '06'];
+
+function getLabId() {
+  const p = new URLSearchParams(window.location.search);
+  const id = p.get('lab');
+  return LABS[id] ? id : '01';
+}
+
+function labUrl(id) {
+  return 'lab.html?lab=' + id;
+}
+
+function render(id) {
+  const lab = LABS[id];
+  const idx = ORDER.indexOf(id);
+
+  document.title = 'Lab ' + id + ' — ' + lab.title + ' | SUSE Virtualization';
+
+  // Topbar
+  document.getElementById('js-topbar-num').textContent  = 'Lab ' + id;
+  document.getElementById('js-topbar-title').textContent = lab.title;
+
+  // Panel header
+  document.getElementById('js-num').textContent      = 'Lab ' + id + ' of ' + ORDER.length;
+  document.getElementById('js-title').textContent    = lab.title;
+  document.getElementById('js-duration').textContent = lab.duration;
+  document.getElementById('js-intro').textContent    = lab.intro;
+
+  // Progress bar
+  document.getElementById('js-progress').style.width =
+    ((idx + 1) / ORDER.length * 100) + '%';
+
+  // Steps
+  const list = document.getElementById('js-steps');
+  list.innerHTML = '';
+  lab.steps.forEach(function(step, i) {
+    const li = document.createElement('li');
+    li.className = 'lab-step';
+    li.innerHTML =
+      '<div class="step-num">' + (i + 1) + '</div>' +
+      '<div class="step-content">' +
+        '<div class="step-title">' + step.title + '</div>' +
+        '<div class="step-body">' + step.body + '</div>' +
+      '</div>' +
+      '<div class="step-check" title="Mark done">✓</div>';
+
+    li.querySelector('.step-check').addEventListener('click', function() {
+      li.classList.toggle('done');
+    });
+    list.appendChild(li);
+  });
+
+  // Iframe or placeholder
+  const iframe = document.getElementById('js-iframe');
+  const placeholder = document.getElementById('js-placeholder');
+  if (lab.storylaneUrl) {
+    iframe.src = lab.storylaneUrl;
+    iframe.style.display = 'block';
+    placeholder.style.display = 'none';
+  } else {
+    iframe.style.display = 'none';
+    placeholder.style.display = 'flex';
+  }
+
+  // Prev / next
+  const prev = document.getElementById('js-prev');
+  const next = document.getElementById('js-next');
+  if (idx > 0) {
+    prev.removeAttribute('hidden');
+    prev.href = labUrl(ORDER[idx - 1]);
+    prev.addEventListener('click', function(e) {
+      e.preventDefault();
+      history.pushState(null, '', labUrl(ORDER[idx - 1]));
+      render(ORDER[idx - 1]);
+    });
+  } else {
+    prev.setAttribute('hidden', '');
+  }
+  if (idx < ORDER.length - 1) {
+    next.removeAttribute('hidden');
+    next.href = labUrl(ORDER[idx + 1]);
+    next.addEventListener('click', function(e) {
+      e.preventDefault();
+      history.pushState(null, '', labUrl(ORDER[idx + 1]));
+      render(ORDER[idx + 1]);
+    });
+  } else {
+    next.setAttribute('hidden', '');
+  }
+}
+
+// Panel toggle
+document.getElementById('js-toggle').addEventListener('click', function() {
+  const panel  = document.getElementById('js-panel');
+  const btn    = this;
+  const open   = !panel.classList.contains('collapsed');
+  panel.classList.toggle('collapsed', open);
+  btn.classList.toggle('panel-open', !open);
+  btn.querySelector('svg').style.transform = open ? 'none' : 'rotate(180deg)';
+});
+
+// Browser back/forward
+window.addEventListener('popstate', function() { render(getLabId()); });
+
+render(getLabId());
+</script>
+
+</body>
+</html>
