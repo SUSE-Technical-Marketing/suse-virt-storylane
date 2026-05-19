@@ -197,12 +197,33 @@ html, body {
 }
 .placeholder-cta:hover { background: rgba(0,166,81,0.16); text-decoration: none; }
 
+/* ── Resize handle ───────────────────────────────────────────── */
+.lab-resize-handle {
+  width: 6px;
+  flex-shrink: 0;
+  background: transparent;
+  border-left: 1px solid var(--border);
+  cursor: col-resize;
+  position: relative;
+  transition: border-color 0.15s, background 0.15s;
+  z-index: 5;
+}
+
+.lab-resize-handle:hover,
+.lab-resize-handle.dragging {
+  border-left-color: var(--green);
+  background: var(--green-dim);
+}
+
+.lab-resize-handle.hidden {
+  display: none;
+}
+
 /* ── Instructions panel ──────────────────────────────────────── */
 .lab-panel {
   width: var(--panel-w);
   flex-shrink: 0;
   background: var(--bg);
-  border-left: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -213,7 +234,6 @@ html, body {
   width: 0;
   opacity: 0;
   pointer-events: none;
-  border-left: none;
 }
 
 .lab-panel-scroll {
@@ -429,9 +449,9 @@ html, body {
   .lab-shell { height: auto; }
   .lab-body { flex-direction: column; overflow: visible; }
   .lab-frame-area { height: 55vw; min-height: 280px; }
+  .lab-resize-handle { display: none; }
   .lab-panel {
     width: 100%;
-    border-left: none;
     border-top: 1px solid var(--border);
     transition: none;
   }
