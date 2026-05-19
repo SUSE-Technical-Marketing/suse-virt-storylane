@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lab — SUSE Virtualization</title>
+  <title>Lab: SUSE Virtualization</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -95,7 +95,7 @@ const LABS = {
     title: 'UI Orientation',
     duration: '5 min',
     storylaneUrl: null,
-    intro: 'Get familiar with every section of the SUSE Virtualization dashboard before you touch anything. No changes — just explore.',
+    intro: 'Get familiar with every section of the SUSE Virtualization dashboard before you touch anything. No changes. Just explore.',
     steps: [
       {
         title: 'Open the Dashboard',
@@ -107,7 +107,7 @@ const LABS = {
       },
       {
         title: 'Browse Virtual Machines',
-        body: 'The VM list shows each machine\'s state (Running, Stopped, Migrating), the node it\'s running on, and a link to its built-in VNC console — no extra client needed.'
+        body: 'The VM list shows each machine\'s state (Running, Stopped, Migrating), the node it\'s running on, and a link to its built-in VNC console. No extra client needed.'
       },
       {
         title: 'Explore Networks',
@@ -115,7 +115,7 @@ const LABS = {
       },
       {
         title: 'Check Volumes and Images',
-        body: 'Volumes are Longhorn-backed PVCs — one per VM disk. Images are the base qcow2 or ISO files VMs boot from. You can upload new images here at any time.'
+        body: 'Volumes are Longhorn-backed PVCs, one per VM disk. Images are the base qcow2 or ISO files VMs boot from. You can upload new images here at any time.'
       }
     ]
   },
@@ -159,7 +159,7 @@ const LABS = {
       },
       {
         title: 'Create a VLAN VM network',
-        body: 'Under VM Networks, create an L2VlanNetwork. Set the VLAN ID and select the cluster network you just created. Multus + bridge CNI handles the plumbing — the VM gets a real Layer 2 interface.'
+        body: 'Under VM Networks, create an L2VlanNetwork. Set the VLAN ID and select the cluster network you just created. Multus + bridge CNI handles the plumbing. The VM gets a real Layer 2 interface.'
       },
       {
         title: 'Create an IP pool',
@@ -179,7 +179,7 @@ const LABS = {
     steps: [
       {
         title: 'Create custom storage classes',
-        body: 'Go to Advanced → Storage Classes. Create a 2-replica class for dev and a 3-replica class for production. New VMs can select either — the replica count is set at volume creation time.'
+        body: 'Go to Advanced → Storage Classes. Create a 2-replica class for dev and a 3-replica class for production. New VMs can select either. The replica count is set at volume creation time.'
       },
       {
         title: 'Take a VM snapshot',
@@ -187,7 +187,7 @@ const LABS = {
       },
       {
         title: 'Simulate data loss and restore',
-        body: 'Delete a file inside the VM to simulate data loss. Then restore the VM from the snapshot. The VM rolls back to the exact disk state at snapshot time — the file reappears.'
+        body: 'Delete a file inside the VM to simulate data loss. Then restore the VM from the snapshot. The VM rolls back to the exact disk state at snapshot time. The file reappears.'
       },
       {
         title: 'Configure a backup target',
@@ -207,7 +207,7 @@ const LABS = {
       },
       {
         title: 'Initiate migration',
-        body: 'Open the VM\'s context menu (⋮) and click Migrate. Select the target node. SUSE Virtualization uses KubeVirt\'s live migration — memory pages are transferred to the target while the VM keeps running.'
+        body: 'Open the VM\'s context menu (⋮) and click Migrate. Select the target node. SUSE Virtualization uses KubeVirt\'s live migration. Memory pages are transferred to the target while the VM keeps running.'
       },
       {
         title: 'Watch the progress',
@@ -223,7 +223,7 @@ const LABS = {
     title: 'Rancher + RKE2',
     duration: '15 min',
     storylaneUrl: null,
-    intro: 'Provision a full production-grade Kubernetes cluster on top of your HCI using Rancher Prime and the Harvester node driver — VMs become Kubernetes nodes automatically.',
+    intro: 'Provision a full production-grade Kubernetes cluster on top of your HCI using Rancher Prime and the Harvester node driver. VMs become Kubernetes nodes automatically.',
     steps: [
       {
         title: 'Import Harvester into Rancher',
@@ -235,11 +235,11 @@ const LABS = {
       },
       {
         title: 'Provision an RKE2 cluster',
-        body: 'Create a new cluster and select the Harvester infrastructure provider. Define node pools for control plane and workers. Rancher spins up VMs on Harvester automatically — no manual VM creation needed.'
+        body: 'Create a new cluster and select the Harvester infrastructure provider. Define node pools for control plane and workers. Rancher spins up VMs on Harvester automatically. No manual VM creation needed.'
       },
       {
         title: 'Deploy a workload',
-        body: 'Once the cluster shows Active, deploy a sample workload — a simple nginx Deployment. Expose it as a LoadBalancer Service. Rancher handles the kubectl apply for you through the UI.'
+        body: 'Once the cluster shows Active, deploy a sample workload: a simple nginx Deployment. Expose it as a LoadBalancer Service. Rancher handles the kubectl apply for you through the UI.'
       },
       {
         title: 'Verify the external IP',
@@ -265,7 +265,7 @@ function render(id) {
   const lab = LABS[id];
   const idx = ORDER.indexOf(id);
 
-  document.title = 'Lab ' + id + ' — ' + lab.title + ' | SUSE Virtualization';
+  document.title = 'Lab ' + id + ': ' + lab.title + ' | SUSE Virtualization';
 
   // Topbar
   document.getElementById('js-topbar-num').textContent  = 'Lab ' + id;
