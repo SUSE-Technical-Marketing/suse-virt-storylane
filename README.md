@@ -2,6 +2,10 @@
 
 A static HTML site that gives prospects and customers a guided, hands-on introduction to SUSE Virtualization. Six interactive Storylane demos, each paired with a step-by-step instructions panel, covering the platform from first login to a running Kubernetes cluster on HCI.
 
+**Live site:** [https://suse-technical-marketing.github.io/suse-virt-storylane/](https://suse-technical-marketing.github.io/suse-virt-storylane/)
+
+Every push to `main` deploys automatically via GitHub Actions.
+
 ## Contents
 
 ```
@@ -14,13 +18,12 @@ img/suse-logo.png   — SUSE chameleon + wordmark (transparent PNG)
 docs/
   poc-guide-v1.7.0.md     — SUSE Virtualization POC Guide reference
   suse-virt-0-to-hero.md  — Full lab guide and recording scripts
+.github/workflows/pages.yml  — GitHub Pages deployment workflow
 ```
 
 ## Run locally
 
 The site is plain HTML — no build step, no dependencies, no Node.js required.
-
-### Option 1: Python (built into macOS and most Linux distros)
 
 ```bash
 git clone https://github.com/SUSE-Technical-Marketing/suse-virt-storylane.git
@@ -30,23 +33,7 @@ python3 -m http.server 8080
 
 Open [http://localhost:8080](http://localhost:8080) in your browser.
 
-### Option 2: Node.js `serve`
-
-```bash
-git clone https://github.com/SUSE-Technical-Marketing/suse-virt-storylane.git
-cd suse-virt-storylane
-npx serve .
-```
-
-### Option 3: VS Code Live Server extension
-
-1. Open the cloned folder in VS Code.
-2. Install the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension.
-3. Right-click `index.html` and choose **Open with Live Server**.
-
-### Option 4: Open the file directly
-
-For basic browsing you can open `index.html` directly in a browser (`File → Open` or drag the file in). The lab page (`lab.html`) embeds the Storylane demo in an iframe, which requires a server for the embed to load correctly — use any option above when testing labs.
+A local server is needed for local dev because Chrome blocks `history.pushState` on `file://` origins. For sharing with anyone else, use the live GitHub Pages URL above.
 
 ## Demo overview
 
