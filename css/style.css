@@ -540,7 +540,64 @@ footer {
   text-align: center;
 }
 
-/* ── Responsive ──────────────────────────────────────────────── */
+/* ── Responsive: tablet (769px – 1024px) ────────────────────── */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .container, .nav-inner { padding: 0 32px; }
+  .pain-grid    { grid-template-columns: repeat(2, 1fr); }
+  .req-grid     { grid-template-columns: repeat(2, 1fr); }
+  .demos-grid   { grid-template-columns: repeat(2, 1fr); }
+  .steps-grid   { grid-template-columns: repeat(2, 1fr); }
+  .poc-categories { grid-template-columns: 1fr; }
+  section       { padding: 64px 0; }
+  .hero         { padding: 72px 0 64px; }
+  .nav-links    { gap: 18px; }
+  .nav-links a  { font-size: 13px; }
+}
+
+/* ── Responsive: large screens (≥1440px) ────────────────────── */
+@media (min-width: 1440px) {
+  .container, .nav-inner { max-width: 1360px; }
+  body          { font-size: 17px; }
+  section       { padding: 96px 0; }
+  .hero         { padding: 120px 0 96px; }
+  .hero-sub     { font-size: 20px; max-width: 640px; }
+  .section-sub  { font-size: 17px; max-width: 680px; }
+  .pain-body, .pillar-body, .req-note, .step-body { font-size: 15px; }
+  .demo-sub     { font-size: 14px; }
+  .demo-points li { font-size: 14px; }
+}
+
+/* ── Responsive: extra large screens (≥1920px) ──────────────── */
+@media (min-width: 1920px) {
+  .container, .nav-inner { max-width: 1760px; }
+  body          { font-size: 18px; }
+  section       { padding: 112px 0; }
+  .hero         { padding: 140px 0 112px; }
+  .hero-sub     { font-size: 22px; max-width: 760px; }
+  .section-sub  { font-size: 18px; max-width: 800px; }
+  .nav-inner    { height: 72px; }
+  .logo-img     { height: 30px; }
+  .logo-product { font-size: 17px; }
+  .nav-links a  { font-size: 16px; }
+  .pain-body, .pillar-body, .req-note, .step-body { font-size: 16px; }
+  .demo-sub     { font-size: 15px; }
+  .demo-points li { font-size: 15px; }
+  .stack-desc   { font-size: 15px; }
+  .stat-num     { font-size: 44px; }
+  .stat-label   { font-size: 15px; }
+}
+
+/* ── Responsive: ultrawide screens (≥2560px) ────────────────── */
+@media (min-width: 2560px) {
+  .container, .nav-inner { max-width: 2200px; }
+  body          { font-size: 20px; }
+  .demos-grid   { grid-template-columns: repeat(6, 1fr); }
+  .pain-grid    { grid-template-columns: repeat(3, 1fr); }
+  .req-grid     { grid-template-columns: repeat(6, 1fr); }
+  .steps-grid   { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ── Responsive: mobile (≤768px) ────────────────────────────── */
 @media (max-width: 768px) {
   .pain-grid    { grid-template-columns: 1fr; }
   .pillars-grid { grid-template-columns: 1fr; }
@@ -552,4 +609,6 @@ footer {
   .day-card     { grid-template-columns: 1fr; gap: 8px; }
   .footer-inner { flex-direction: column; text-align: center; }
   .poc-categories { grid-template-columns: 1fr; }
+  section       { padding: 48px 0; }
+  .hero         { padding: 56px 0 48px; }
 }

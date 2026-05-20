@@ -468,7 +468,26 @@ html, body {
   transition: width 0.3s ease;
 }
 
-/* ── Responsive ──────────────────────────────────────────────── */
+/* ── Responsive: large screens (≥1440px) ────────────────────── */
+@media (min-width: 1440px) {
+  :root { --panel-w: 440px; --topbar-h: 60px; }
+}
+
+@media (min-width: 1920px) {
+  :root { --panel-w: 520px; --topbar-h: 64px; }
+  .lab-topbar-title { font-size: 18px; }
+  .lab-back-link    { font-size: 15px; }
+  .lab-toggle-btn   { font-size: 15px; }
+}
+
+/* ── Responsive: tablet landscape (801px – 1100px) ──────────── */
+@media (min-width: 801px) and (max-width: 1100px) {
+  :root { --panel-w: 300px; }
+  .lab-topbar-title { font-size: 14px; }
+  .lab-topbar-num   { font-size: 11px; }
+}
+
+/* ── Responsive: mobile (≤800px) ────────────────────────────── */
 @media (max-width: 800px) {
   html, body { overflow: auto; }
   .lab-shell { height: auto; }
