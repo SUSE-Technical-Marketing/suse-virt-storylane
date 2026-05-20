@@ -21,9 +21,9 @@ docs/
 .github/workflows/pages.yml  - GitHub Pages deployment workflow
 ```
 
-## Run locally
+## Local development
 
-The site is plain HTML with no build step, no dependencies, and no Node.js required.
+If you need to test changes before pushing, run a local server — Chrome blocks `history.pushState` on `file://` origins, so opening the HTML file directly will break panel navigation.
 
 ```bash
 git clone https://github.com/SUSE-Technical-Marketing/suse-virt-storylane.git
@@ -31,9 +31,7 @@ cd suse-virt-storylane
 python3 -m http.server 8080
 ```
 
-Open [http://localhost:8080](http://localhost:8080) in your browser.
-
-A local server is needed for local dev because Chrome blocks `history.pushState` on `file://` origins. For sharing with anyone else, use the live GitHub Pages URL above.
+For sharing with anyone, use the live GitHub Pages URL instead.
 
 ## Demo overview
 
