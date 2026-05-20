@@ -215,12 +215,37 @@ html, body {
   background: var(--green-dim);
 }
 
-.lab-resize-handle.hidden {
-  display: none;
+.handle-collapse-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--gray);
+  padding: 0;
+  line-height: 1;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  z-index: 6;
+}
+
+.handle-collapse-btn:hover {
+  background: var(--green-dim);
+  border-color: var(--green-border);
+  color: var(--green);
 }
 
 /* ── Instructions panel ──────────────────────────────────────── */
 .lab-panel {
+  --panel-scale: 1;
   width: var(--panel-w);
   flex-shrink: 0;
   background: var(--bg);
@@ -258,7 +283,7 @@ html, body {
 
 .panel-num {
   font-family: var(--font-head);
-  font-size: 11px;
+  font-size: calc(11px * var(--panel-scale));
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -268,7 +293,7 @@ html, body {
 
 .panel-title {
   font-family: var(--font-head);
-  font-size: 21px;
+  font-size: calc(21px * var(--panel-scale));
   font-weight: 700;
   color: var(--text);
   line-height: 1.3;
@@ -284,13 +309,13 @@ html, body {
 
 .panel-duration {
   font-family: var(--font-head);
-  font-size: 13px;
+  font-size: calc(13px * var(--panel-scale));
   font-weight: 600;
   color: var(--gray);
 }
 
 .panel-intro {
-  font-size: 15px;
+  font-size: calc(15px * var(--panel-scale));
   color: var(--gray);
   line-height: 1.65;
 }
@@ -338,7 +363,7 @@ html, body {
 
 .step-title {
   font-family: var(--font-head);
-  font-size: 15px;
+  font-size: calc(15px * var(--panel-scale));
   font-weight: 700;
   color: var(--text);
   margin-bottom: 4px;
@@ -352,7 +377,7 @@ html, body {
 }
 
 .step-body {
-  font-size: 14px;
+  font-size: calc(14px * var(--panel-scale));
   color: var(--gray);
   line-height: 1.6;
 }
@@ -391,7 +416,7 @@ html, body {
 
 .panel-back {
   font-family: var(--font-head);
-  font-size: 14px;
+  font-size: calc(14px * var(--panel-scale));
   font-weight: 600;
   color: var(--gray);
   text-decoration: none;
@@ -407,7 +432,7 @@ html, body {
   flex: 1;
   text-align: center;
   font-family: var(--font-head);
-  font-size: 14px;
+  font-size: calc(14px * var(--panel-scale));
   font-weight: 600;
   padding: 8px 10px;
   border-radius: 6px;
