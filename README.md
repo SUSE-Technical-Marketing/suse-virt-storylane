@@ -16,7 +16,6 @@ css/style.css       - Marketing site styles
 css/lab.css         - Lab environment styles
 img/suse-logo.png   - SUSE chameleon + wordmark (transparent PNG)
 docs/
-  poc-guide-v1.7.0.md     - SUSE Virtualization POC Guide reference
   suse-virt-0-to-hero.md  - Full lab guide and recording scripts
 .github/workflows/pages.yml  - GitHub Pages deployment workflow
 ```
