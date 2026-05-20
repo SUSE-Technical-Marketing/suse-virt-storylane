@@ -15,6 +15,10 @@
 
   <!-- ── Top bar ──────────────────────────────────────────── -->
   <header class="lab-topbar">
+    <a href="index.html">
+      <img src="img/suse-logo.png" alt="SUSE" class="lab-logo">
+    </a>
+    <div class="lab-topbar-divider"></div>
     <div class="lab-topbar-center">
       <span class="lab-topbar-num" id="js-topbar-num"></span>
       <span class="lab-topbar-sep">|</span>
@@ -343,6 +347,20 @@ function setPanelCollapsed(collapsed) {
   const panel  = document.getElementById('js-panel');
   const colBtn = document.getElementById('js-collapse');
   const topBtn = document.getElementById('js-toggle');
+
+  panel.style.transition = 'width 0.3s ease, opacity 0.3s ease';
+
+  if (collapsed) {
+    panel._savedWidth = panel.offsetWidth;
+    panel.style.width = '0px';
+    panel.style.opacity = '0';
+    panel.style.pointerEvents = 'none';
+  } else {
+    panel.style.width = (panel._savedWidth || 380) + 'px';
+    panel.style.opacity = '';
+    panel.style.pointerEvents = '';
+  }
+
   panel.classList.toggle('collapsed', collapsed);
   colBtn.textContent = collapsed ? '‹' : '›';
   topBtn.classList.toggle('panel-open', !collapsed);
@@ -366,8 +384,7 @@ document.getElementById('js-collapse').addEventListener('click', function(e) {
 (function() {
   const handle = document.getElementById('js-resize');
   const panel  = document.getElementById('js-panel');
-  const MIN_W  = 240;
-  const MAX_W  = 0.6;
+  const MIN_W = 240;
 
   handle.addEventListener('mousedown', function(e) {
     if (e.target.id === 'js-collapse') return;
@@ -383,8 +400,7 @@ document.getElementById('js-collapse').addEventListener('click', function(e) {
 
     function onMove(e) {
       const delta = startX - e.clientX;
-      const maxW  = Math.floor(window.innerWidth * MAX_W);
-      const newW  = Math.min(Math.max(startW + delta, MIN_W), maxW);
+      const newW  = Math.max(startW + delta, MIN_W);
       panel.style.width = newW + 'px';
     }
 
@@ -409,7 +425,7 @@ document.getElementById('js-collapse').addEventListener('click', function(e) {
   new ResizeObserver(function(entries) {
     for (const entry of entries) {
       const w = entry.contentRect.width;
-      const scale = Math.max(0.88, Math.min(1.4, w / 380));
+      const scale = Math.max(0.88, w / 380);
       entry.target.style.setProperty('--panel-scale', scale);
     }
   }).observe(panel);
