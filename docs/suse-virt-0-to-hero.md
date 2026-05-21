@@ -10,7 +10,7 @@ created: 2026-04-26
 
 ## What This Guide Covers
 
-Six labs. Each one builds on the last. By the end you will have navigated the full SUSE Virtualization stack: created VMs, configured networks, taken snapshots, migrated workloads live between nodes, and provisioned a Kubernetes cluster that runs on top of your hypervisor, all managed from a single Rancher interface.
+Five labs. Each one builds on the last. By the end you will have navigated the full SUSE Virtualization stack: created VMs, configured networks, taken snapshots, and migrated workloads live between nodes without downtime.
 
 Each lab has two parts:
 - **Demo**: a Storylane recording showing the UI flow step by step. Watch it first.
@@ -153,70 +153,68 @@ df -h
 
 ## Lab 3: VM Networking
 
-**Duration:** ~10 minutes  
-**Goal:** Create a VLAN-backed VM network and an IP pool for load balancer addresses, then attach both to a VM.
+**Duration:** ~8 minutes  
+**Goal:** Create a cluster network, build an untagged VM network on top of it, and attach it to a VM as a second NIC.
 
 ### Concepts
 
-- **VM Network (L2VlanNetwork)**: a network attachment that bridges VM traffic onto a tagged VLAN on the physical (or virtual) switch. Uses Multus under the hood.
-- **IP Pool**: a range of IPs that SUSE Virtualization's built-in load balancer (kube-vip or MetalLB) assigns to services of type LoadBalancer, including VMs that request one.
-- **Kube-OVN Subnet**: for isolated SDN networks with no external path. Supports overlapping CIDRs between namespaces.
+- **Cluster Network**: binds to a physical NIC on each node. This is the Layer 2 uplink that VM networks use to reach the rest of your infrastructure.
+- **VM Network**: a network attachment definition created on top of a cluster network. Multus + bridge CNI delivers a real L2 interface to the VM. With no VLAN ID set, traffic is untagged.
+- **Untagged network**: the VM gets a native (untagged) interface on the physical uplink. No VLAN trunking needed on the upstream switch.
 
 ### Demo Recording Guide (Storylane)
 
-> Record two flows: (1) create a VM network, (2) create an IP pool. Keep them short.
+> Record three flows: (A) create a cluster network, (B) create an untagged VM network, (C) attach it to a VM.
 
-**Flow A: Create a VM Network**
-
-| Step | Where to click | Tooltip text |
-|------|---------------|--------------|
-| 1 | Networks → VM Networks → Create | "A VM Network is a network attachment definition. It tells Multus how to connect a VM's NIC to a specific VLAN." |
-| 2 | Name → `vlan100` | "Name it to match the VLAN. This becomes a Kubernetes NetworkAttachmentDefinition." |
-| 3 | Type → L2VlanNetwork | "L2 bridging. The VM's traffic goes out tagged with the VLAN ID on the host's NIC." |
-| 4 | Cluster Network → `mgmt` | "The cluster network is the physical uplink. mgmt is the default. Add more in Advanced > Cluster Networks." |
-| 5 | VLAN ID → `100` | "This VLAN tag must be trunked on your upstream switch for the VM to reach anything outside the host." |
-| 6 | Click Create | "The network is now available to any VM in this cluster. Attach it as a second NIC." |
-
-**Flow B: Create an IP Pool**
+**Flow A: Create a Cluster Network**
 
 | Step | Where to click | Tooltip text |
 |------|---------------|--------------|
-| 1 | Networks → IP Pools → Create | "An IP pool gives your VMs and services routable addresses from a defined range. No DHCP server needed." |
-| 2 | Name → `vm-pool` | " " |
-| 3 | Subnet → `192.168.100.0/24` | "The subnet this pool belongs to. VMs will get IPs from the ranges you define below." |
-| 4 | IP Range → `192.168.100.100` to `192.168.100.120` | "Only these IPs will be allocated. The rest of the subnet is free for other uses." |
-| 5 | Gateway → `192.168.100.1` | "Used for routing. Must match your physical network." |
-| 6 | Click Create | "The pool is ready. Any LoadBalancer service or VM requesting an external IP will draw from this range." |
+| 1 | Networks → Cluster Networks → Create | "A cluster network is the physical uplink. You bind it to a NIC on each node so VM networks have somewhere to send traffic." |
+| 2 | Name → `vm-uplink` | "Name it after the role, not the NIC. Makes it easier to move to a different NIC later without renaming." |
+| 3 | On each node, select the NIC to bind | "Every node needs a binding. If a node has no binding, VMs using this network cannot run on it." |
+| 4 | Click Create | "The cluster network is ready. Now you can build VM networks on top of it." |
 
-**Flow C: Attach the network to a VM**
+**Flow B: Create an Untagged VM Network**
+
+| Step | Where to click | Tooltip text |
+|------|---------------|--------------|
+| 1 | Networks → VM Networks → Create | "A VM Network is a network attachment definition. It tells Multus how to wire a VM's NIC to the physical uplink." |
+| 2 | Name → `flat-net` | "This name is what you pick when adding a NIC to a VM." |
+| 3 | Cluster Network → `vm-uplink` | "The physical uplink this network uses. Traffic from VMs exits through the NIC you bound earlier." |
+| 4 | Leave VLAN ID empty | "No VLAN ID means untagged traffic. The VM's frames go out as-is on the wire." |
+| 5 | Click Create | "The network is available to any VM in this cluster." |
+
+**Flow C: Attach the Network to a VM**
 
 | Step | Where to click | Tooltip text |
 |------|---------------|--------------|
 | 1 | Virtual Machines → select `my-first-vm` → Edit | " " |
 | 2 | Networks tab → Add Network | "You can attach multiple networks to a single VM. Each one becomes a separate NIC inside the guest." |
-| 3 | Network dropdown → select `vlan100` | " " |
-| 4 | Save and restart the VM | "The new NIC is hot-pluggable on supported kernels. A restart is the safe path for all OS types." |
+| 3 | Network dropdown → select `flat-net` | "The VM now has two NICs: its management NIC and a second one on the untagged uplink." |
+| 4 | Save and restart the VM | "A restart is the safe path for all OS types to pick up the new NIC." |
 
 ### Hands-on Steps
 
 ```bash
 # After the VM restarts, SSH in and verify the second NIC appeared
+ssh opensuse@<VM_IP>
 ip addr show
 
-# The second interface (eth1 or similar) should have no IP yet
-# Configure it with your VLAN 100 address
-sudo ip addr add 192.168.100.50/24 dev eth1
+# The second interface (eth1 or similar) is up with no IP yet
+# Configure a static address in the same subnet as your uplink
+sudo ip addr add 192.168.1.50/24 dev eth1
 sudo ip link set eth1 up
 
-# Verify routing
-ping 192.168.100.1
+# Verify connectivity on the new interface
+ping 192.168.1.1
 ```
 
 ### Verification
 
-- `vlan100` appears in Networks → VM Networks.
-- `vm-pool` appears in Networks → IP Pools.
+- `flat-net` appears in Networks → VM Networks.
 - The VM has two NICs after restart, visible in `ip addr show`.
+- The second interface reaches the gateway on the untagged network.
 
 ---
 
@@ -323,94 +321,16 @@ ping 8.8.8.8 &   # leave this running
 
 ---
 
-## Lab 6: Rancher Integration, Provision a Kubernetes Cluster
-
-**Duration:** ~15 minutes  
-**Goal:** Use Rancher to provision a K3s cluster where the nodes are VMs running on SUSE Virtualization. This is the full stack: bare metal → HCI → guest Kubernetes → workload.
-
-### Concepts
-
-- **Rancher as cloud provider**: when Rancher manages a Harvester cluster, it treats Harvester like a cloud: GCP, AWS, Azure, or your own datacenter. It uses the Harvester node driver to create VMs, install K3s via cloud-init, and register the cluster back to Rancher.
-- **Cloud credential**: the Rancher credential that lets it authenticate against the Harvester API to create VMs.
-- **Harvester CSI driver**: lets the guest K8s cluster use Longhorn for persistent volumes.
-- **Harvester Cloud Provider**: enables LoadBalancer services in the guest cluster, drawing IPs from an IP pool you define in Harvester.
-
-### Demo Recording Guide (Storylane)
-
-**Flow A: Create a Harvester cloud credential**
-
-| Step | Where to click | Tooltip text |
-|------|---------------|--------------|
-| 1 | Rancher UI → top-right menu → Cloud Credentials → Create | "A cloud credential is how Rancher authenticates against a cloud provider. For Harvester, it uses the Harvester API." |
-| 2 | Select Harvester | " " |
-| 3 | Name → `harvester-local` | " " |
-| 4 | Cluster → select your imported Harvester cluster | "Rancher already manages this cluster. The credential just gives it permission to create VMs on it." |
-| 5 | Click Create | "The credential is stored securely. Rancher will use it every time it needs to provision or scale a node." |
-
-**Flow B: Provision the K3s cluster**
-
-| Step | Where to click | Tooltip text |
-|------|---------------|--------------|
-| 1 | Cluster Management → Create | " " |
-| 2 | Select RKE2/K3s → Infrastructure: Harvester | "You are telling Rancher: create the nodes as Harvester VMs, not on a cloud provider." |
-| 3 | Cluster name → `dev-cluster` | " " |
-| 4 | Cloud Credential → `harvester-local` | " " |
-| 5 | Node Pool: Machine Count → `1`, Image → your OS image, CPU → `2`, Memory → `4 GiB` | "One node to start. You can add pools and scale later. Rancher handles the VM lifecycle." |
-| 6 | Network → select `vmnet` (or your VM network) | " " |
-| 7 | Add-Ons → enable Harvester CSI Driver + Harvester Cloud Provider | "CSI gives the cluster persistent storage from Longhorn. Cloud Provider gives it LoadBalancer IPs from your IP pool." |
-| 8 | Click Create | "Rancher provisions a VM on Harvester, installs K3s via cloud-init, and registers the cluster. Takes 5-8 minutes." |
-| 9 | Cluster Management → watch dev-cluster become Active | "Active means the API server is reachable and all nodes are Ready." |
-
-**Flow C: Access the cluster and deploy a workload**
-
-| Step | Where to click | Tooltip text |
-|------|---------------|--------------|
-| 1 | dev-cluster → Download KubeConfig | "This is the kubeconfig for your guest cluster. Keep it safe, it has cluster-admin credentials." |
-| 2 | Show kubectl get nodes | "One node, Ready. It is a VM running on your Harvester cluster." |
-| 3 | Deploy a test app | "Deploy anything: nginx, a demo app, whatever. The point is this workload is running on a VM that lives in your HCI cluster." |
-| 4 | Expose it as LoadBalancer, show EXTERNAL-IP | "The IP comes from your Harvester IP pool, the same one you created in Lab 3. The full chain connects." |
-
-### Hands-on Steps
-
-```bash
-export KUBECONFIG=~/dev-cluster.yaml
-
-# Check the node
-kubectl get nodes -o wide
-
-# Deploy a test nginx
-kubectl create deployment nginx --image=nginx
-kubectl expose deployment nginx --type=LoadBalancer --port=80
-
-# Watch for the external IP
-kubectl get svc nginx -w
-
-# Once EXTERNAL-IP appears:
-curl http://<EXTERNAL-IP>
-```
-
-### Verification
-
-- `dev-cluster` shows `Active` in Rancher Cluster Management.
-- `kubectl get nodes` returns 1 Ready node.
-- nginx deployment reaches Running state.
-- `curl` to the LoadBalancer IP returns the nginx default page.
-
----
-
 ## The Full Stack
 
-After completing all six labs, you have touched every layer:
+After completing all five labs, you have touched every layer:
 
 ```
 Physical hardware (or nested KVM for the demo)
-  └── SUSE Virtualization (KubeVirt + Longhorn + Kube-OVN)
-        ├── VMs with VLAN networking and replicated storage
-        ├── Snapshots and live migration
-        └── Guest K3s cluster (dev-cluster)
-              ├── Longhorn persistent volumes via CSI
-              └── LoadBalancer IPs from Harvester IP pool
-                    └── Your workload, running end to end
+  └── SUSE Virtualization (KubeVirt + Longhorn + Multus)
+        ├── VMs with untagged L2 networking and replicated storage
+        ├── Snapshots and off-cluster backup targets
+        └── Live migration with zero downtime
 ```
 
 Everything here is open source. Everything is SUSE-supported. No proprietary storage array, no separate hypervisor license, no separate network appliance.
@@ -425,10 +345,9 @@ Use this to track recording progress.
 |------|-----|--------|-------|
 | UI Orientation | Lab 1 | [ ] | No system changes needed |
 | Create First VM | Lab 2 | [ ] | Needs pre-loaded OS image |
-| VM Networking | Lab 3 | [ ] | Three flows: network, IP pool, attach |
+| VM Networking | Lab 3 | [ ] | Three flows: cluster network, untagged VM network, attach |
 | Storage + Snapshots | Lab 4 | [ ] | Two flows: storage class, snapshot/restore |
 | Live Migration | Lab 5 | [ ] | Single flow, keep short |
-| Rancher + K3s | Lab 6 | [ ] | Three flows: credential, provision, access |
 
 **Recording tips for Storylane:**
 - Record each flow as a separate demo. It's easier to update one without re-recording everything.
