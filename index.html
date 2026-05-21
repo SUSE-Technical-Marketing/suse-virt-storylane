@@ -35,7 +35,7 @@
     <img src="img/suse-logo.png" alt="SUSE" class="hero-logo">
     <div class="hero-badge">Interactive Demo Series</div>
     <h1>SUSE Virtualization<br><span class="accent">From Zero to Production</span></h1>
-    <p class="hero-sub">Six hands-on demos. From first login to a running Kubernetes cluster on your HCI. No environment needed. Click through at your own pace.</p>
+    <p class="hero-sub">Five hands-on demos. From first login to live VM migration on your HCI. No environment needed. Click through at your own pace.</p>
     <div class="hero-ctas">
       <a href="#demos" class="btn btn-primary">Start the demos</a>
       <a href="#platform" class="btn btn-outline">How it works</a>
@@ -49,11 +49,11 @@
     </div>
     <div class="hero-stats">
       <div class="stat">
-        <span class="stat-num">6</span>
+        <span class="stat-num">5</span>
         <span class="stat-label">Interactive demos</span>
       </div>
       <div class="stat">
-        <span class="stat-num">55</span>
+        <span class="stat-num">38</span>
         <span class="stat-label">Minutes total</span>
       </div>
       <div class="stat">
@@ -204,7 +204,7 @@
 <section id="demos">
   <div class="container">
     <div class="section-label">Hands-on demos</div>
-    <h2 class="section-title">Six demos, end to end</h2>
+    <h2 class="section-title">Five demos, end to end</h2>
     <p class="section-sub">Each demo is a Storylane interactive walkthrough. Click through steps at your own pace. No environment needed.</p>
     <div class="demos-grid">
 
@@ -243,15 +243,15 @@
       <div class="demo-card">
         <div class="demo-header">
           <div class="demo-num">03</div>
-          <span class="demo-duration">10 min</span>
+          <span class="demo-duration">8 min</span>
         </div>
         <div class="demo-title">VM Networking</div>
-        <div class="demo-sub">VLAN bridging, IP pools, and multi-NIC VMs</div>
+        <div class="demo-sub">Cluster networks, untagged VM networks, and multi-NIC VMs</div>
         <ul class="demo-points">
           <li>Create a cluster network and bind it to a physical NIC</li>
-          <li>Create a VLAN VM network (L2VlanNetwork via Multus + bridge CNI)</li>
-          <li>Create an IP pool for LoadBalancer address allocation (Kube-OVN)</li>
-          <li>Attach the VLAN network to a VM as a second NIC</li>
+          <li>Create an untagged VM network on top of it (Multus + bridge CNI)</li>
+          <li>Attach the network to a VM as a second NIC</li>
+          <li>VM gets a real Layer 2 interface on the uplink</li>
         </ul>
         <a href="lab.html?lab=03" target="_blank" class="btn-demo placeholder">Coming soon</a>
       </div>
@@ -288,21 +288,6 @@
         <a href="lab.html?lab=05" target="_blank" class="btn-demo placeholder">Coming soon</a>
       </div>
 
-      <div class="demo-card">
-        <div class="demo-header">
-          <div class="demo-num">06</div>
-          <span class="demo-duration">15 min</span>
-        </div>
-        <div class="demo-title">Rancher + RKE2</div>
-        <div class="demo-sub">Provision Kubernetes on top of your HCI cluster</div>
-        <ul class="demo-points">
-          <li>Import the Harvester cluster into Rancher Prime</li>
-          <li>Create a Harvester cloud credential</li>
-          <li>Rancher provisions an RKE2 cluster via the Harvester node driver</li>
-          <li>Deploy a workload, expose as LoadBalancer, verify external IP</li>
-        </ul>
-        <a href="lab.html?lab=06" target="_blank" class="btn-demo placeholder">Coming soon</a>
-      </div>
 
     </div>
   </div>
@@ -313,7 +298,7 @@
   <div class="container">
     <div class="section-label">The complete picture</div>
     <h2 class="section-title">The full stack, end to end</h2>
-    <p class="section-sub">After the six demos, you have touched every layer of the platform.</p>
+    <p class="section-sub">After the five demos, you have touched every layer of the platform.</p>
     <div class="stack-diagram">
       <div class="stack-layer">
         <div class="stack-icon">🖥</div>
@@ -377,7 +362,7 @@
       <div class="step-card">
         <div class="step-n">02</div>
         <div class="step-title">Try the hands-on lab</div>
-        <p class="step-body">Work through a guided lab on a real bare-metal SUSE Virtualization cluster. No environment setup on your end. All six topics covered, at your own pace.</p>
+        <p class="step-body">Work through a guided lab on a real bare-metal SUSE Virtualization cluster. No environment setup on your end. All five topics covered, at your own pace.</p>
       </div>
       <div class="step-card">
         <div class="step-n">03</div>
