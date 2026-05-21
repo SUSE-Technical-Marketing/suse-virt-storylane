@@ -1,6 +1,6 @@
 # SUSE Virtualization: Interactive Demo Hub
 
-A static HTML site that gives prospects and customers a guided, hands-on introduction to SUSE Virtualization. Six interactive Storylane demos, each paired with a step-by-step instructions panel, covering the platform from first login to a running Kubernetes cluster on HCI.
+A static HTML site that gives prospects and customers a guided, hands-on introduction to SUSE Virtualization. Five interactive Storylane demos, each paired with a step-by-step instructions panel, covering the platform from first login to live VM migration on HCI.
 
 **Live site:** [https://suse-technical-marketing.github.io/suse-virt-storylane/](https://suse-technical-marketing.github.io/suse-virt-storylane/)
 
@@ -38,10 +38,9 @@ For sharing with anyone, use the live GitHub Pages URL instead.
 |---|------|----------|
 | 01 | UI Orientation | 5 min |
 | 02 | Create Your First VM | 10 min |
-| 03 | VM Networking | 10 min |
+| 03 | VM Networking | 8 min |
 | 04 | Storage, Snapshots + Backups | 10 min |
 | 05 | Live Migration | 5 min |
-| 06 | Rancher + RKE2 | 15 min |
 
 ## How the lab environment works
 
@@ -64,4 +63,4 @@ Once recordings are published, update the `storylaneUrl` field for each lab in t
 }
 ```
 
-The iframe loads automatically once the URL is set. Also update the six `btn-demo` links in `index.html` if you want the card buttons to link directly to Storylane instead of the lab page.
+The iframe loads automatically once the URL is set. Also update the five `btn-demo` links in `index.html` if you want the card buttons to link directly to Storylane instead of the lab page.
