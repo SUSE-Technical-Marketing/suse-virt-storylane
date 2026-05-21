@@ -147,25 +147,25 @@ const LABS = {
   },
   '03': {
     title: 'VM Networking',
-    duration: '10 min',
+    duration: '8 min',
     storylaneUrl: null,
-    intro: 'Build a complete VM network from scratch: a cluster network bound to a physical NIC, a VLAN on top of it, an IP pool for LoadBalancer services, and a VM with a second NIC attached.',
+    intro: 'Build a VM network from scratch: a cluster network bound to a physical NIC, an untagged VM network on top of it, and a VM with a second NIC attached. No VLAN tags, no IP pools — just a clean Layer 2 path from the VM to the wire.',
     steps: [
       {
         title: 'Create a cluster network',
-        body: 'Go to Networks → Cluster Networks. Create a new one and bind it to the physical NIC you want to use for VM traffic on each node. This becomes the physical uplink for your VLANs.'
+        body: 'Go to Networks → Cluster Networks and click Create. Bind it to the physical NIC you want to use for VM traffic on each node. Every node needs a binding — if a node has no binding, VMs using this network cannot run on it. This becomes the physical uplink for all VM networks you build on top of it.'
       },
       {
-        title: 'Create a VLAN VM network',
-        body: 'Under VM Networks, create an L2VlanNetwork. Set the VLAN ID and select the cluster network you just created. Multus + bridge CNI handles the plumbing. The VM gets a real Layer 2 interface.'
-      },
-      {
-        title: 'Create an IP pool',
-        body: 'Under Networks → IP Pools, define the CIDR, gateway, and any reserved ranges. Kube-OVN pulls addresses from this pool when assigning external IPs to LoadBalancer-type services.'
+        title: 'Create an untagged VM network',
+        body: 'Go to Networks → VM Networks and click Create. Select the cluster network you just created as the uplink. Leave the VLAN ID field empty — no tag means untagged traffic. Multus + bridge CNI wires the VM directly onto the physical uplink at Layer 2.'
       },
       {
         title: 'Attach the network to a VM',
-        body: 'Edit an existing VM and add a second NIC. Select the VLAN VM network you created. The VM now has two interfaces: its management NIC and a dedicated interface on the VLAN segment.'
+        body: 'Open an existing VM, click Edit, and go to the Networks tab. Click Add Network and select the VM network you created. Save and restart the VM. It now has two NICs: the original management interface and a second one on the new untagged network segment.'
+      },
+      {
+        title: 'Verify the second NIC inside the VM',
+        body: 'SSH into the VM and run ip addr show. You should see a second interface (eth1 or similar) with no IP yet. Assign a static address in the same subnet as your uplink and run ping toward the gateway to confirm Layer 2 connectivity is working.'
       }
     ]
   },
@@ -217,37 +217,9 @@ const LABS = {
       }
     ]
   },
-  '06': {
-    title: 'Rancher + RKE2',
-    duration: '15 min',
-    storylaneUrl: null,
-    intro: 'Provision a full production-grade Kubernetes cluster on top of your HCI using Rancher Prime and the Harvester node driver. VMs become Kubernetes nodes automatically.',
-    steps: [
-      {
-        title: 'Import Harvester into Rancher',
-        body: 'In Rancher Prime, go to Virtualization Management and click Import Existing. Copy the registration command and run it on a Harvester node. The cluster appears under management within a minute.'
-      },
-      {
-        title: 'Create a Harvester cloud credential',
-        body: 'Under Cloud Credentials, add a new Harvester credential using the API URL and a kubeconfig from your Harvester cluster. This gives Rancher access to provision VMs via the Harvester node driver.'
-      },
-      {
-        title: 'Provision an RKE2 cluster',
-        body: 'Create a new cluster and select the Harvester infrastructure provider. Define node pools for control plane and workers. Rancher spins up VMs on Harvester automatically. No manual VM creation needed.'
-      },
-      {
-        title: 'Deploy a workload',
-        body: 'Once the cluster shows Active, deploy a sample workload: a simple nginx Deployment. Expose it as a LoadBalancer Service. Rancher handles the kubectl apply for you through the UI.'
-      },
-      {
-        title: 'Verify the external IP',
-        body: 'Kube-OVN assigns an address from the IP pool you created in Lab 03. The Service External IP field updates automatically. curl the IP to confirm the workload is reachable from outside the cluster.'
-      }
-    ]
-  }
 };
 
-const ORDER = ['01', '02', '03', '04', '05', '06'];
+const ORDER = ['01', '02', '03', '04', '05'];
 
 function getLabId() {
   const p = new URLSearchParams(window.location.search);
