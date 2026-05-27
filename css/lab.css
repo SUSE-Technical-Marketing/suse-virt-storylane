@@ -38,6 +38,15 @@ html, body {
 
 .lab-logo { height: 22px; width: auto; display: block; }
 
+.lab-home-link {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  opacity: 0.85;
+  transition: opacity 0.15s;
+}
+.lab-home-link:hover { opacity: 1; }
+
 .lab-topbar-divider {
   width: 1px;
   height: 20px;
