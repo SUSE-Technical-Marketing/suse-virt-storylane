@@ -24,7 +24,7 @@
 
 <!-- ══ CLUSTER BOUNDARY ══ -->
 <rect x="24" y="168" width="912" height="420" rx="12" fill="#f7fdf9" stroke="#30BA78" stroke-width="1.5" stroke-dasharray="8 5"/>
-<text x="480" y="191" text-anchor="middle" font-size="13" font-weight="600" fill="#1B6B3A">SUSE Virtualization Cluster · v1.7.1</text>
+<text x="480" y="191" text-anchor="middle" font-size="13" font-weight="600" fill="#1B6B3A">SUSE Virtualization Cluster</text>
 
 <!-- ══ VIP ══ -->
 <rect x="330" y="198" width="300" height="52" rx="26" fill="#1B6B3A" filter="url(#shadow)"/>
@@ -39,7 +39,7 @@
 <!-- ══ NODE 1 ══ -->
 <rect x="72" y="296" width="240" height="188" rx="8" fill="#ffffff" stroke="#30BA78" stroke-width="2" filter="url(#shadow)"/>
 <text x="192" y="322" text-anchor="middle" font-size="15" font-weight="700" fill="#1B6B3A">Node 1</text>
-<text x="192" y="340" text-anchor="middle" font-size="11" fill="#5a7a65">SUSE Virtualization 1.7.1</text>
+<text x="192" y="340" text-anchor="middle" font-size="11" fill="#5a7a65">SUSE Virtualization</text>
 <line x1="80" y1="349" x2="304" y2="349" stroke="#d8ede0" stroke-width="1"/>
 <!-- component pills -->
 <rect x="84" y="357" width="100" height="22" rx="11" fill="#0075A8"/>
@@ -48,7 +48,7 @@
 <text x="250" y="372" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Longhorn</text>
 <!-- OS bar -->
 <rect x="84" y="385" width="216" height="20" rx="10" fill="#30BA78"/>
-<text x="192" y="399" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">SUSE Linux Micro 6.2</text>
+<text x="192" y="399" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">SUSE Linux Micro</text>
 <line x1="80" y1="412" x2="304" y2="412" stroke="#d8ede0" stroke-width="1"/>
 <!-- NICs -->
 <circle cx="90" cy="424" r="5" fill="#0075A8"/>
@@ -61,14 +61,14 @@
 <!-- ══ NODE 2 ══ -->
 <rect x="360" y="296" width="240" height="188" rx="8" fill="#ffffff" stroke="#30BA78" stroke-width="2" filter="url(#shadow)"/>
 <text x="480" y="322" text-anchor="middle" font-size="15" font-weight="700" fill="#1B6B3A">Node 2</text>
-<text x="480" y="340" text-anchor="middle" font-size="11" fill="#5a7a65">SUSE Virtualization 1.7.1</text>
+<text x="480" y="340" text-anchor="middle" font-size="11" fill="#5a7a65">SUSE Virtualization</text>
 <line x1="368" y1="349" x2="592" y2="349" stroke="#d8ede0" stroke-width="1"/>
 <rect x="372" y="357" width="100" height="22" rx="11" fill="#0075A8"/>
 <text x="422" y="372" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">KubeVirt</text>
 <rect x="488" y="357" width="100" height="22" rx="11" fill="#671C4C"/>
 <text x="538" y="372" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Longhorn</text>
 <rect x="372" y="385" width="216" height="20" rx="10" fill="#30BA78"/>
-<text x="480" y="399" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">SUSE Linux Micro 6.2</text>
+<text x="480" y="399" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">SUSE Linux Micro</text>
 <line x1="368" y1="412" x2="592" y2="412" stroke="#d8ede0" stroke-width="1"/>
 <circle cx="378" cy="424" r="5" fill="#0075A8"/>
 <text x="388" y="428" font-size="11" fill="#444">Management</text>
@@ -80,14 +80,14 @@
 <!-- ══ NODE 3 ══ -->
 <rect x="648" y="296" width="240" height="188" rx="8" fill="#ffffff" stroke="#30BA78" stroke-width="2" filter="url(#shadow)"/>
 <text x="768" y="322" text-anchor="middle" font-size="15" font-weight="700" fill="#1B6B3A">Node 3</text>
-<text x="768" y="340" text-anchor="middle" font-size="11" fill="#5a7a65">SUSE Virtualization 1.7.1</text>
+<text x="768" y="340" text-anchor="middle" font-size="11" fill="#5a7a65">SUSE Virtualization</text>
 <line x1="656" y1="349" x2="880" y2="349" stroke="#d8ede0" stroke-width="1"/>
 <rect x="660" y="357" width="100" height="22" rx="11" fill="#0075A8"/>
 <text x="710" y="372" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">KubeVirt</text>
 <rect x="776" y="357" width="100" height="22" rx="11" fill="#671C4C"/>
 <text x="826" y="372" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Longhorn</text>
 <rect x="660" y="385" width="216" height="20" rx="10" fill="#30BA78"/>
-<text x="768" y="399" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">SUSE Linux Micro 6.2</text>
+<text x="768" y="399" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">SUSE Linux Micro</text>
 <line x1="656" y1="412" x2="880" y2="412" stroke="#d8ede0" stroke-width="1"/>
 <circle cx="666" cy="424" r="5" fill="#0075A8"/>
 <text x="676" y="428" font-size="11" fill="#444">Management</text>
