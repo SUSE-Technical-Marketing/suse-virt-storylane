@@ -163,18 +163,18 @@
       <img src="img/suse-virt-architecture.svg" alt="SUSE Virtualization reference architecture: Rancher Prime managing a 3-node cluster with Management, Storage, and VM Traffic networks" class="arch-diagram-img">
     </div>
 
-    <div class="arch-callouts">
-      <div class="arch-card">
-        <div class="arch-card-label">Rancher Prime</div>
-        <p class="arch-card-body">Single pane of glass for the SUSE Virtualization cluster and any downstream Kubernetes running on top. Manages cluster lifecycle, RBAC, observability, and VM-backed node pools via the Harvester node driver.</p>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-title">Rancher Prime</div>
+        <p class="pain-body">Single pane of glass for the SUSE Virtualization cluster and any downstream Kubernetes running on top. Manages cluster lifecycle, RBAC, observability, and VM-backed node pools via the Harvester node driver.</p>
       </div>
-      <div class="arch-card">
-        <div class="arch-card-label">SUSE Virtualization cluster</div>
-        <p class="arch-card-body">Three nodes running SUSE Virt 1.7.1 on SUSE Linux Micro 6.2, an immutable OS. KubeVirt handles VM scheduling. Longhorn provides replicated block storage. The first three nodes auto-form the HA control plane quorum.</p>
+      <div class="pain-card">
+        <div class="pain-title">SUSE Virtualization cluster</div>
+        <p class="pain-body">Three nodes running SUSE Virt 1.7.1 on SUSE Linux Micro 6.2, an immutable OS. KubeVirt handles VM scheduling. Longhorn provides replicated block storage. The first three nodes auto-form the HA control plane quorum.</p>
       </div>
-      <div class="arch-card">
-        <div class="arch-card-label">Cluster VIP</div>
-        <p class="arch-card-body">A virtual IP backed by kube-vip that floats across all three nodes. The Harvester UI, the API, and the Rancher management connection all go through the VIP. No external load balancer needed.</p>
+      <div class="pain-card">
+        <div class="pain-title">Cluster VIP</div>
+        <p class="pain-body">A virtual IP backed by kube-vip that floats across all three nodes. The Harvester UI, the API, and the Rancher management connection all go through the VIP. No external load balancer needed.</p>
       </div>
     </div>
   </div>
