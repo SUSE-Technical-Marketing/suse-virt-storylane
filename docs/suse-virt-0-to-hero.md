@@ -41,24 +41,15 @@ This matters because it means:
 
 ## Architecture at a Glance
 
-```
-┌─────────────────────────────────────────────────────┐
-│  Rancher Prime (Mission Control)                    │
-│  — manages Harvester cluster                        │
-│  — provisions guest K8s clusters on Harvester VMs  │
-└──────────────────────┬──────────────────────────────┘
-                       │
-┌──────────────────────▼──────────────────────────────┐
-│  SUSE Virtualization cluster (3+ nodes)             │
-│                                                     │
-│  node-1        node-2        node-3                 │
-│  ┌─────────┐  ┌─────────┐  ┌─────────┐             │
-│  │ KubeVirt│  │ KubeVirt│  │ KubeVirt│  ← VMs      │
-│  │ Longhorn│  │ Longhorn│  │ Longhorn│  ← Storage  │
-│  │Kube-OVN │  │Kube-OVN │  │Kube-OVN │  ← Network  │
-│  └─────────┘  └─────────┘  └─────────┘             │
-└─────────────────────────────────────────────────────┘
-```
+![SUSE Virtualization reference architecture](../img/suse-virt-architecture.png)
+
+The reference topology for this lab series: Rancher Prime manages a 3-node SUSE Virtualization cluster through a cluster VIP. Each node runs SUSE Linux Micro 6.2, with KubeVirt for VM scheduling and Longhorn for replicated block storage. Three networks keep traffic separated: Management for control plane communication, Storage for Longhorn replication, and VM Traffic for guest VM connectivity.
+
+**Rancher Prime** sits outside the cluster as a dedicated management node running RKE2. It connects to the Harvester cluster via the VIP and acts as the single control point for cluster lifecycle, RBAC, observability, and guest Kubernetes provisioning.
+
+**Cluster VIP** is a floating IP backed by kube-vip. The Harvester UI, the API endpoint, and the Rancher management channel all go through it. When a node goes down, the VIP moves. No external load balancer required.
+
+**Three nodes** form the HA control plane quorum automatically. KubeVirt schedules VMs across nodes. Longhorn keeps three replicas of every volume by default. A node failure does not take down VMs or storage.
 
 ---
 

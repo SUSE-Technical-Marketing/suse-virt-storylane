@@ -23,6 +23,7 @@
     <div class="nav-links">
       <a href="#problem">The Problem</a>
       <a href="#platform">Platform</a>
+      <a href="#architecture">Architecture</a>
       <a href="#demos">Demos</a>
       <a href="#stack">Full Stack</a>
     </div>
@@ -142,6 +143,39 @@
       <span class="feature-pill">PXE / USB / ISO install</span>
       <span class="feature-pill">Container workloads</span>
       <span class="feature-pill">DR failover + failback</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── Architecture ───────────────────────────────────────────── -->
+<section id="architecture">
+  <div class="container">
+    <div class="section-label">Architecture</div>
+    <h2 class="section-title">One management plane, three nodes, full HA</h2>
+    <p class="section-sub">SUSE Virtualization runs KVM virtual machines as Kubernetes workloads. Every VM is a pod. No separate hypervisor kernel. No external SAN.</p>
+
+    <div class="arch-intro">
+      <p>KubeVirt schedules VMs across nodes the same way Kubernetes schedules containers. Longhorn replicates volumes across all three nodes with no external storage required. Rancher Prime sits above the cluster as a single management plane for both the HCI layer and any Kubernetes clusters provisioned on top of it.</p>
+      <p>The diagram below shows the reference topology used in this lab series: Rancher Prime managing a 3-node SUSE Virtualization cluster over a dedicated VIP, with three separate networks for management, storage, and VM traffic.</p>
+    </div>
+
+    <div class="arch-diagram-wrap">
+      <img src="img/suse-virt-architecture.svg" alt="SUSE Virtualization reference architecture: Rancher Prime managing a 3-node cluster with Management, Storage, and VM Traffic networks" class="arch-diagram-img">
+    </div>
+
+    <div class="arch-callouts">
+      <div class="arch-card">
+        <div class="arch-card-label">Rancher Prime</div>
+        <p class="arch-card-body">Single pane of glass for the SUSE Virtualization cluster and any downstream Kubernetes running on top. Manages cluster lifecycle, RBAC, observability, and VM-backed node pools via the Harvester node driver.</p>
+      </div>
+      <div class="arch-card">
+        <div class="arch-card-label">SUSE Virtualization cluster</div>
+        <p class="arch-card-body">Three nodes running SUSE Virt 1.7.1 on SUSE Linux Micro 6.2, an immutable OS. KubeVirt handles VM scheduling. Longhorn provides replicated block storage. The first three nodes auto-form the HA control plane quorum.</p>
+      </div>
+      <div class="arch-card">
+        <div class="arch-card-label">Cluster VIP</div>
+        <p class="arch-card-body">A virtual IP backed by kube-vip that floats across all three nodes. The Harvester UI, the API, and the Rancher management connection all go through the VIP. No external load balancer needed.</p>
+      </div>
     </div>
   </div>
 </section>
