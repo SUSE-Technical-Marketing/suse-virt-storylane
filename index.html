@@ -154,6 +154,11 @@
     <h2 class="section-title">One management plane, three nodes, full HA</h2>
     <p class="section-sub">SUSE Virtualization runs KVM virtual machines as Kubernetes workloads. Every VM is a pod. No separate hypervisor kernel. No external SAN.</p>
 
+    <div class="arch-intro">
+      <p>KubeVirt schedules VMs across nodes the same way Kubernetes schedules containers. Longhorn replicates volumes across all three nodes with no external storage required. Rancher Prime sits above the cluster as a single management plane for both the HCI layer and any Kubernetes clusters provisioned on top of it.</p>
+      <p>The diagram below shows the reference topology used in this lab series: Rancher Prime managing a 3-node SUSE Virtualization cluster over a dedicated VIP, with three separate networks for management, storage, and VM traffic.</p>
+    </div>
+
     <div class="arch-diagram-wrap">
       <img src="img/suse-virt-architecture.svg" alt="SUSE Virtualization reference architecture: Rancher Prime managing a 3-node cluster with Management, Storage, and VM Traffic networks" class="arch-diagram-img">
     </div>
