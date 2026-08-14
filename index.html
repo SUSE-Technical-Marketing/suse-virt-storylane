@@ -3,420 +3,80 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SUSE Virtualization: From Zero to Production</title>
-  <meta name="description" content="Six interactive Storylane demos covering SUSE Virtualization from first login to a running Kubernetes cluster on your HCI.">
+  <title>SUSE Virtualization: Interactive Labs Have Moved</title>
+  <meta name="description" content="The SUSE Virtualization interactive demos have moved to suse.com.">
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://www.suse.com/products/rancher/virtualization/interactive-labs/">
+  <meta http-equiv="refresh" content="3; url=https://www.suse.com/products/rancher/virtualization/interactive-labs/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface);
+    }
+    .moved-card {
+      max-width: 480px;
+      width: 100%;
+      margin: 24px;
+      padding: 48px 40px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+      text-align: center;
+    }
+    .moved-logo { height: 32px; width: auto; margin-bottom: 28px; }
+    .moved-title {
+      font-family: var(--font-head);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .moved-body {
+      color: var(--gray);
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+    .moved-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      background: var(--green);
+      color: #fff;
+      font-family: var(--font-head);
+      font-weight: 600;
+      font-size: 15px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .moved-btn:hover { background: var(--green-alt); text-decoration: none; }
+    .moved-note {
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--gray);
+    }
+  </style>
 </head>
 <body>
-
-<!-- ── Nav ────────────────────────────────────────────────────── -->
-<nav>
-  <div class="nav-inner">
-    <a href="index.html" class="logo">
-      <img src="img/suse-logo.png" alt="SUSE" class="logo-img">
-      <span class="logo-divider"></span>
-      <span class="logo-product">Virtualization</span>
-    </a>
-    <div class="nav-links">
-      <a href="#problem">The Problem</a>
-      <a href="#platform">Platform</a>
-      <a href="#architecture">Architecture</a>
-      <a href="#demos">Demos</a>
-      <a href="#stack">Full Stack</a>
-    </div>
+  <div class="moved-card">
+    <img src="img/suse-logo.png" alt="SUSE" class="moved-logo">
+    <div class="moved-title">This demo hub has moved</div>
+    <p class="moved-body">The SUSE Virtualization interactive labs now live on suse.com. You'll be redirected automatically in a few seconds.</p>
+    <a href="https://www.suse.com/products/rancher/virtualization/interactive-labs/" class="moved-btn">Go to Interactive Labs →</a>
+    <div class="moved-note">suse.com/products/rancher/virtualization/interactive-labs</div>
   </div>
-</nav>
-
-<!-- ── Hero ───────────────────────────────────────────────────── -->
-<section class="hero">
-  <div class="container">
-    <img src="img/suse-logo.png" alt="SUSE" class="hero-logo">
-    <div class="hero-badge">Interactive Demo Series</div>
-    <h1>SUSE Virtualization<br><span class="accent">From Zero to Production</span></h1>
-    <p class="hero-sub">Five hands-on demos. From first login to live VM migration on your HCI. No environment needed. Click through at your own pace.</p>
-    <div class="hero-ctas">
-      <a href="#demos" class="btn btn-primary">Start the demos</a>
-      <a href="#platform" class="btn btn-outline">How it works</a>
-    </div>
-    <div class="hero-meta">
-      <span class="hero-version">Validated on SUSE Virtualization v1.7.1</span>
-      <span class="hero-meta-sep">·</span>
-      <span class="hero-version">Rancher Prime v2.13.1</span>
-      <span class="hero-meta-sep">·</span>
-      <span class="hero-version">x86_64 &amp; ARM64</span>
-    </div>
-    <div class="hero-stats">
-      <div class="stat">
-        <span class="stat-num">5</span>
-        <span class="stat-label">Interactive demos</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num">38</span>
-        <span class="stat-label">Minutes total</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num">0</span>
-        <span class="stat-label">Setup required</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num">100%</span>
-        <span class="stat-label">Open source</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── Problem ────────────────────────────────────────────────── -->
-<section id="problem">
-  <div class="container">
-    <div class="section-label">The problem</div>
-    <h2 class="section-title">Why teams are rethinking their virtualization stack</h2>
-    <p class="section-sub">Legacy hypervisors were built for a world that no longer exists.</p>
-    <div class="pain-grid">
-      <div class="pain-card">
-        <div class="pain-icon">💸</div>
-        <div class="pain-title">Licensing costs</div>
-        <p class="pain-body">VMware bills jumped 2–5x post-Broadcom. SUSE Virtualization includes a VM import tool to bring existing vSphere workloads across directly, with no re-platforming required.</p>
-      </div>
-      <div class="pain-card">
-        <div class="pain-icon">🏗</div>
-        <div class="pain-title">Operational silos</div>
-        <p class="pain-body">VMs and Kubernetes managed with different tools, different skills, different teams. Two ops models for one platform.</p>
-      </div>
-      <div class="pain-card">
-        <div class="pain-icon">🔒</div>
-        <div class="pain-title">Vendor lock-in</div>
-        <p class="pain-body">Proprietary storage, networking, and APIs at every layer. Moving anything means rebuilding everything.</p>
-      </div>
-    </div>
-    <p class="problem-cta">SUSE Virtualization solves all three. One platform. 100% open source.</p>
-  </div>
-</section>
-
-<!-- ── Platform ───────────────────────────────────────────────── -->
-<section id="platform">
-  <div class="container">
-    <div class="section-label">The platform</div>
-    <h2 class="section-title">What is SUSE Virtualization?</h2>
-    <p class="section-sub">Open-source HCI built on Kubernetes. Not bolted onto it.</p>
-    <div class="pillars-grid">
-      <div class="pillar-card">
-        <div class="pillar-num">01</div>
-        <div>
-          <div class="pillar-title">KubeVirt on SLE Micro</div>
-          <p class="pillar-body">VMs run as Kubernetes workloads on Elemental for SLE Micro 6.1, an immutable OS that removes routine maintenance. Manage VMs with kubectl, YAML, or GitOps.</p>
-        </div>
-      </div>
-      <div class="pillar-card">
-        <div class="pillar-num">02</div>
-        <div>
-          <div class="pillar-title">Longhorn</div>
-          <p class="pillar-body">Distributed block storage, built in. No external SAN needed. 3-replica replication across nodes by default. VM snapshots stored locally; backups offloaded to NFS or S3.</p>
-        </div>
-      </div>
-      <div class="pillar-card">
-        <div class="pillar-num">03</div>
-        <div>
-          <div class="pillar-title">SDN Networking</div>
-          <p class="pillar-body">Canal handles internal cluster traffic. Multus + bridge CNI delivers L2 VLAN networks to VMs. Kube-OVN manages IP pools for LoadBalancer services. No NSX required.</p>
-        </div>
-      </div>
-      <div class="pillar-card">
-        <div class="pillar-num">04</div>
-        <div>
-          <div class="pillar-title">Rancher Prime</div>
-          <p class="pillar-body">Single pane of glass for Harvester and all guest Kubernetes clusters. Built-in Prometheus and Grafana observability. Multi-tenant RBAC across clusters and projects.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="feature-strip">
-      <span class="feature-pill">Windows + Linux VMs</span>
-      <span class="feature-pill">VMware import</span>
-      <span class="feature-pill">Air-gapped deployment</span>
-      <span class="feature-pill">NFS + S3 backup targets</span>
-      <span class="feature-pill">CPU pinning</span>
-      <span class="feature-pill">AD / LDAP via Rancher</span>
-      <span class="feature-pill">PXE / USB / ISO install</span>
-      <span class="feature-pill">Container workloads</span>
-      <span class="feature-pill">DR failover + failback</span>
-    </div>
-  </div>
-</section>
-
-<!-- ── Architecture ───────────────────────────────────────────── -->
-<section id="architecture">
-  <div class="container">
-    <div class="section-label">Architecture</div>
-    <h2 class="section-title">One management plane, three nodes, full HA</h2>
-    <p class="section-sub">SUSE Virtualization runs KVM virtual machines as Kubernetes workloads. Every VM is a pod. No separate hypervisor kernel. No external SAN.</p>
-
-    <div class="arch-intro">
-      <p>KubeVirt schedules VMs across nodes the same way Kubernetes schedules containers. Longhorn replicates volumes across all three nodes with no external storage required. Rancher Prime sits above the cluster as a single management plane for both the HCI layer and any Kubernetes clusters provisioned on top of it.</p>
-      <p>The diagram below shows the reference topology used in this lab series: Rancher Prime managing a 3-node SUSE Virtualization cluster over a dedicated VIP, with three separate networks for management, storage, and VM traffic.</p>
-    </div>
-
-    <div class="arch-diagram-wrap">
-      <img src="img/suse-virt-architecture.svg" alt="SUSE Virtualization reference architecture: Rancher Prime managing a 3-node cluster with Management, Storage, and VM Traffic networks" class="arch-diagram-img">
-    </div>
-
-    <div class="pain-grid">
-      <div class="pain-card">
-        <div class="pain-title">Rancher Prime</div>
-        <p class="pain-body">Single pane of glass for the SUSE Virtualization cluster and any downstream Kubernetes running on top. Manages cluster lifecycle, RBAC, observability, and VM-backed node pools via the Harvester node driver.</p>
-      </div>
-      <div class="pain-card">
-        <div class="pain-title">SUSE Virtualization cluster</div>
-        <p class="pain-body">Three nodes running SUSE Virt 1.7.1 on SUSE Linux Micro 6.2, an immutable OS. KubeVirt handles VM scheduling. Longhorn provides replicated block storage. The first three nodes auto-form the HA control plane quorum.</p>
-      </div>
-      <div class="pain-card">
-        <div class="pain-title">Cluster VIP</div>
-        <p class="pain-body">A virtual IP backed by kube-vip that floats across all three nodes. The Harvester UI, the API, and the Rancher management connection all go through the VIP. No external load balancer needed.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── Requirements ───────────────────────────────────────────── -->
-<section id="requirements">
-  <div class="container">
-    <div class="section-label">No proprietary hardware</div>
-    <h2 class="section-title">Runs on the servers you already have</h2>
-    <p class="section-sub">SUSE Virtualization installs on standard x86_64 or ARM64 bare metal. No certified-only hardware, no storage appliances, no special networking gear.</p>
-    <div class="req-grid">
-
-      <div class="req-card">
-        <div class="req-icon">🖥</div>
-        <div class="req-label">Architecture</div>
-        <div class="req-spec">x86_64 and ARM64</div>
-        <p class="req-note">Any server with hardware-assisted virtualization. Works on Dell, HPE, Lenovo, Supermicro, Arm-based servers, and more.</p>
-      </div>
-
-      <div class="req-card">
-        <div class="req-icon">💾</div>
-        <div class="req-label">Storage</div>
-        <div class="req-spec">No SAN required</div>
-        <p class="req-note">Longhorn turns local SSD or NVMe disks into replicated distributed storage. No external storage array needed.</p>
-      </div>
-
-      <div class="req-card">
-        <div class="req-icon">🌐</div>
-        <div class="req-label">Networking</div>
-        <div class="req-spec">Standard switches</div>
-        <p class="req-note">VLAN trunking on your existing switches is all you need. No proprietary SDN hardware, no NSX license.</p>
-      </div>
-
-      <div class="req-card">
-        <div class="req-icon">⎈</div>
-        <div class="req-label">High availability</div>
-        <div class="req-spec">3-node minimum</div>
-        <p class="req-note">First 3 nodes auto-promote to HA management nodes. Add more nodes at any time to expand capacity.</p>
-      </div>
-
-      <div class="req-card">
-        <div class="req-icon">📦</div>
-        <div class="req-label">Installation</div>
-        <div class="req-spec">ISO, USB, or PXE</div>
-        <p class="req-note">Boot from the Harvester ISO, a USB stick, or PXE-boot across your rack. Air-gapped deployment fully supported.</p>
-      </div>
-
-      <div class="req-card">
-        <div class="req-icon">🔓</div>
-        <div class="req-label">License</div>
-        <div class="req-spec">100% open source</div>
-        <p class="req-note">Apache 2.0 licensed. No per-VM fees, no CPU socket taxes, no proprietary add-ons to unlock basic features.</p>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ── Demos ──────────────────────────────────────────────────── -->
-<section id="demos">
-  <div class="container">
-    <div class="section-label">Hands-on demos</div>
-    <h2 class="section-title">Five demos, end to end</h2>
-    <p class="section-sub">Each demo is a Storylane interactive walkthrough. Click through steps at your own pace. No environment needed.</p>
-    <div class="demos-grid">
-
-      <div class="demo-card">
-        <div class="demo-header">
-          <div class="demo-num">01</div>
-          <span class="demo-duration">5 min</span>
-        </div>
-        <div class="demo-title">UI Orientation</div>
-        <div class="demo-sub">Navigate the platform before touching anything</div>
-        <ul class="demo-points">
-          <li>Dashboard: live cluster health, node count, resource pressure</li>
-          <li>Hosts: per-node CPU, memory, and Longhorn disk health</li>
-          <li>Virtual Machines: state, node placement, VNC console</li>
-          <li>Networks, Volumes, Images: where to find everything</li>
-        </ul>
-        <a href="lab.html?lab=01" target="_blank" class="btn-demo">Start demo</a>
-      </div>
-
-      <div class="demo-card">
-        <div class="demo-header">
-          <div class="demo-num">02</div>
-          <span class="demo-duration">10 min</span>
-        </div>
-        <div class="demo-title">Create Your First VM</div>
-        <div class="demo-sub">From image to running VM, Linux or Windows</div>
-        <ul class="demo-points">
-          <li>Pick an image (qcow2 for Linux, ISO for Windows Server), set CPU and RAM</li>
-          <li>Inject SSH key and cloud-init user-data; Longhorn clones the volume automatically</li>
-          <li>Access via VNC console before SSH is ready</li>
-          <li>SSH in and verify vCPU, RAM, and disk match the spec</li>
-        </ul>
-        <a href="lab.html?lab=02" target="_blank" class="btn-demo">Start demo</a>
-      </div>
-
-      <div class="demo-card">
-        <div class="demo-header">
-          <div class="demo-num">03</div>
-          <span class="demo-duration">8 min</span>
-        </div>
-        <div class="demo-title">VM Networking</div>
-        <div class="demo-sub">Cluster networks, untagged VM networks, and multi-NIC VMs</div>
-        <ul class="demo-points">
-          <li>Create a cluster network and bind it to a physical NIC</li>
-          <li>Create an untagged VM network on top of it (Multus + bridge CNI)</li>
-          <li>Attach the network to a VM as a second NIC</li>
-          <li>VM gets a real Layer 2 interface on the uplink</li>
-        </ul>
-        <a href="lab.html?lab=03" target="_blank" class="btn-demo">Start demo</a>
-      </div>
-
-      <div class="demo-card">
-        <div class="demo-header">
-          <div class="demo-num">04</div>
-          <span class="demo-duration">10 min</span>
-        </div>
-        <div class="demo-title">Storage, Snapshots + Backups</div>
-        <div class="demo-sub">Longhorn replication, local snapshots, and off-cluster backup targets</div>
-        <ul class="demo-points">
-          <li>Create a custom storage class (2-replica dev vs 3-replica prod)</li>
-          <li>Take a crash-consistent VM snapshot, stored locally in the cluster</li>
-          <li>Simulate data loss, restore to a new VM from the snapshot</li>
-          <li>Configure an NFS or S3 backup target for off-cluster DR backups</li>
-        </ul>
-        <a href="lab.html?lab=04" target="_blank" class="btn-demo">Start demo</a>
-      </div>
-
-      <div class="demo-card">
-        <div class="demo-header">
-          <div class="demo-num">05</div>
-          <span class="demo-duration">5 min</span>
-        </div>
-        <div class="demo-title">Live Migration</div>
-        <div class="demo-sub">Move a running VM between nodes with zero downtime</div>
-        <ul class="demo-points">
-          <li>Requires a 3-node cluster. No migration on single-node setups.</li>
-          <li>One-click migration from the VM context menu; choose the target node</li>
-          <li>VM lands on the new node. Status briefly shows Migrating.</li>
-          <li>SSH session stays alive. IP does not change. Zero packet loss.</li>
-        </ul>
-        <a href="lab.html?lab=05" target="_blank" class="btn-demo">Start demo</a>
-      </div>
-
-
-    </div>
-  </div>
-</section>
-
-<!-- ── Full Stack ─────────────────────────────────────────────── -->
-<section id="stack">
-  <div class="container">
-    <div class="section-label">The complete picture</div>
-    <h2 class="section-title">The full stack, end to end</h2>
-    <p class="section-sub">After the five demos, you have touched every layer of the platform.</p>
-    <div class="stack-diagram">
-      <div class="stack-layer">
-        <div class="stack-icon">🖥</div>
-        <div class="stack-info">
-          <div class="stack-name">Physical hardware</div>
-          <div class="stack-desc">Bare metal nodes booted from ISO, USB, or PXE &nbsp;|&nbsp; x86_64 and ARM64 &nbsp;|&nbsp; SSD/NVMe storage</div>
-        </div>
-      </div>
-      <div class="stack-connector">+</div>
-      <div class="stack-layer">
-        <div class="stack-icon">☁️</div>
-        <div class="stack-info">
-          <div class="stack-name">SUSE Virtualization cluster (Harvester v1.7.1)</div>
-          <div class="stack-desc">Elemental SLE Micro 6.1 OS &nbsp;|&nbsp; KubeVirt VMs &nbsp;|&nbsp; Longhorn replicated storage &nbsp;|&nbsp; Canal + VLAN networking &nbsp;|&nbsp; Live migration</div>
-        </div>
-      </div>
-      <div class="stack-connector">+</div>
-      <div class="stack-layer">
-        <div class="stack-icon">🔭</div>
-        <div class="stack-info">
-          <div class="stack-name">Rancher Prime v2.13.1</div>
-          <div class="stack-desc">Multi-cluster management &nbsp;|&nbsp; Prometheus + Grafana observability &nbsp;|&nbsp; Multi-tenant RBAC &nbsp;|&nbsp; Harvester node driver</div>
-        </div>
-      </div>
-      <div class="stack-connector">+</div>
-      <div class="stack-layer">
-        <div class="stack-icon">⎈</div>
-        <div class="stack-info">
-          <div class="stack-name">Guest Kubernetes (K3s or RKE2)</div>
-          <div class="stack-desc">Nodes are VMs on Harvester &nbsp;|&nbsp; Longhorn CSI for persistent volumes &nbsp;|&nbsp; Harvester IP pools for LoadBalancer IPs</div>
-        </div>
-      </div>
-      <div class="stack-connector">+</div>
-      <div class="stack-layer">
-        <div class="stack-icon">🚀</div>
-        <div class="stack-info">
-          <div class="stack-name">Your workload</div>
-          <div class="stack-desc">Running end to end, from bare metal to application</div>
-        </div>
-      </div>
-    </div>
-    <p class="stack-footer">
-      Everything open source. Everything SUSE-supported.
-      <span> No proprietary storage. No hypervisor license. No vendor lock-in.</span>
-    </p>
-  </div>
-</section>
-
-<!-- ── Next Steps ─────────────────────────────────────────────── -->
-<section>
-  <div class="container">
-    <div class="section-label">What's next</div>
-    <h2 class="section-title">Liked what you saw?</h2>
-    <p class="section-sub">Three ways to keep going.</p>
-    <div class="steps-grid">
-      <div class="step-card">
-        <div class="step-n">01</div>
-        <div class="step-title">Dig into the docs</div>
-        <p class="step-body">The <a href="https://documentation.suse.com/cloudnative/virtualization/" target="_blank">official SUSE Virtualization documentation</a> covers every feature shown in these demos in depth: architecture, networking, storage, Rancher integration, and more.</p>
-      </div>
-      <div class="step-card">
-        <div class="step-n">02</div>
-        <div class="step-title">Try the hands-on lab</div>
-        <p class="step-body">Work through a guided lab on a real bare-metal SUSE Virtualization cluster. No environment setup on your end. All five topics covered, at your own pace.</p>
-      </div>
-      <div class="step-card">
-        <div class="step-n">03</div>
-        <div class="step-title">Talk to SUSE</div>
-        <p class="step-body">Questions about your specific environment, workloads, or migration path? The SUSE team can help you plan a migration from VMware and size a cluster for your needs.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── Footer ─────────────────────────────────────────────────── -->
-<footer>
-  <div class="container">
-    <div class="footer-inner">
-      <img src="img/suse-logo.png" alt="SUSE" class="footer-logo-img">
-      <span>© 2026 SUSE LLC. All rights reserved.</span>
-      <a href="https://documentation.suse.com/cloudnative/virtualization/" target="_blank">Documentation</a>
-    </div>
-  </div>
-</footer>
-
+  <script>
+    window.location.replace("https://www.suse.com/products/rancher/virtualization/interactive-labs/");
+  </script>
 </body>
 </html>
